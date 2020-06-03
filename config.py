@@ -1,18 +1,18 @@
 class Config:
-    SECRET_KEY = "2lpxt96qt@jl)3gr^gnejy#we-pstw%+l+74-dfgzr!a3c*6s%"
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:123@192.168.99.100/jwt_users"
+    SECRET_KEY = "56we(3hev1w$n4cnja$3i4i+)-g3(o^4ow-(5c5dz-^^r0k$-&"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:123@192.168.99.100/themistoReports"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_TOKEN_LOCATION='headers'
 
 
 class Dev(Config):
     Debug=True
-    JWT_TOKEN_LOCATION='headers'
-
+    
 class Prod(Config):
-    pass
+    Debug=False
 
 class Test(Config):
-    pass
+    Debug=True
 
 
 config = {
