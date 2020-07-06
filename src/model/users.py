@@ -24,11 +24,12 @@ class User(db.Model):
     creation_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
     modification_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
 
-    def __init__(self, username, password, is_admin):
+    def __init__(self, username, password, is_admin, person_id):
         bcrypt = Bcrypt(current_app)
         self.username = username
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
         self.is_admin = is_admin
+        self.person_id = person_id
 
     def compare_password(self, password):
         bcrypt = Bcrypt(current_app)

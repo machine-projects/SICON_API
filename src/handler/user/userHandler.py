@@ -37,8 +37,7 @@ class UserHandler:
         if not(contract.validate(playload)):
             return ResultModel('Envie todos parametros obrigatorios.', False, contract.errors).to_dict(), 406
         user = UserRepository()
-        new_user = user.create(playload.get('username'), playload.get(
-            'password'), playload.get('is_admin'))
+        new_user = user.create(playload)
         return new_user
 
     def update_user(self):

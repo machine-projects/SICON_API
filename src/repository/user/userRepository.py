@@ -1,4 +1,5 @@
 from src.model.users import User
+from src.model.person import Person
 from src import db
 from flask_bcrypt import Bcrypt
 from flask import current_app
@@ -24,11 +25,14 @@ class UserRepository:
             if witch_password:
                 schemas_user = users_fields_with_pass
         
-            users = User.query.filter_by(username=username).first()
-            data = marshal(users, schemas_user)
+            user = User.query.filter_by(username=username).first()
+            if not user:
+                return ResultModel('Nome de usuario não encontrado.', False, True).to_dict()
+            data = marshal(user, schemas_user)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
+            
     def get_by_id(self, _id):
         try:
             users = User.query.get(_id).first()
@@ -37,19 +41,26 @@ class UserRepository:
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
-    def create(self, username, password, is_admin):
+    def create(self, playload):
         try:
+            username = playload.get('username')
+            password = playload.get('password')
+            is_admin = playload.get('is_admin')
+            person_id = playload.get('person_id')
             user = User.query.filter_by(username=username).first()
             if user:
                 return ResultModel(f'Usuario "{username}" já existe.', False, True).to_dict()
-            user = User(username, password, is_admin)
+            person = Person.query.get(person_id)
+            if not person:
+                return ResultModel(f'Pessoa não encontrada.', False, True).to_dict()
+            user = User(username, password, is_admin, person_id)
             db.session.add(user)
             db.session.commit()
             data = marshal(user, users_fields)
             return ResultModel('Usuario criado com sucesso.', data, False).to_dict()
         except Exception as e:
             return ResultModel('Não foi possivel criar o usuario.', False, True, str(e)).to_dict()
-
+    
     def get_by_id(self, _id):
         try:
             user = User.query.get(_id)

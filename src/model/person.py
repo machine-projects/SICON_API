@@ -19,13 +19,22 @@ class Person(db.Model):
     creation_date = db.Column(db.DateTime(), nullable=False, default=datetime.datetime.utcnow())
     modification_date = db.Column(db.DateTime(), nullable=False, default=datetime.datetime.utcnow())
 
-    address = db.relationship("Address", backref=db.backref("address", lazy="dynamic"))
-    user = db.relationship("User", backref=db.backref("users", lazy="dynamic"))
-    person_address = db.relationship("PesonAddress", backref=db.backref("person_address", lazy="dynamic"))
-    contact = db.relationship("Contact", backref=db.backref("contact", lazy="dynamic"))
+    # address = db.relationship("Address", backref=db.backref("address", lazy="dynamic"))
+    # user = db.relationship("User", backref=db.backref("users", lazy="dynamic"))
+    # person_address = db.relationship("PesonAddress", backref=db.backref("person_address", lazy="dynamic"))
+    # contact = db.relationship("Contact", backref=db.backref("contact", lazy="dynamic"))
 
-    def __init__(self, type, birth_date, name, surname, gender, cpf, company_name, cnpj):
-        self.type = type
+    def __init__(self, data_person):
+        _type = data_person.get('type')
+        birth_date = data_person.get('birth_date')
+        name = data_person.get('name')
+        surname = data_person.get('surname')
+        gender = data_person.get('gender')
+        cpf = data_person.get('cpf')
+        company_name = data_person.get('company_name')
+        cnpj = data_person.get('cnpj')
+        
+        self.type = _type
         self.birth_date = birth_date
         self.name = name
         self.surname = surname
@@ -35,5 +44,7 @@ class Person(db.Model):
         self.cnpj = cnpj
     
     def __repr__(self):
-        identification = self.name + self.surname or self.company_name
-        return f'<Person: {identification} , Type:{self._type}, id: {id}'
+        identification = ''
+        if self.name or self.surname or self.company_name:
+            identification = f'{self.name} {self.surname} {self.company_name}'
+        return f'<Person: {identification}'

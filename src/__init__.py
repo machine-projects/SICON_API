@@ -16,10 +16,15 @@ def create_app(config_name):
 
     # imports
     from src.controller.indexController import controller_index
+    
     from src.controller.userController import controller_user
     from src.controller.authController import controller_auth
+    from src.controller.personController import controller_person
+    from src.controller.userAndDependenciesController import controller_user_and_dependencies
     app.register_blueprint(controller_index)
     app.register_blueprint(controller_user)
     app.register_blueprint(controller_auth)
+    app.register_blueprint(controller_person)
+    app.register_blueprint(controller_user_and_dependencies)
 
     return app

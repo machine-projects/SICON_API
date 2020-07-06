@@ -16,15 +16,15 @@ class Address(db.Model):
     city = db.Column(db.String(128), index=True)
     creation_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
     modification_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
-    person_address = db.relationship("PersonAddress",  backref=db.backref("person_address", lazy="dynamic"))
+    # person_address = db.relationship("PersonAddress",  backref=db.backref("person_address", lazy="dynamic"))
 
-    def __init__(self, person_address_id, neighborhood, street, number, complement, city):
-        self.person_address_id = person_address_id
-        self.neighborhood = neighborhood
-        self.street = street
-        self.number = number
-        self.complement = complement
-        self.city = city
+    def __init__(self, data):
+        self.person_id = data.get('person_id')
+        self.neighborhood = data.get('neighborhood')
+        self.street = data.get('street')
+        self.number = data.get('number')
+        self.complement = data.get('complement')
+        self.city = data.get('city')
 
     def __repr__(self):
         if self.city and self.neighborhood and self.street and self.number:

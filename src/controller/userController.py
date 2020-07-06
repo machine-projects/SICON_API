@@ -13,19 +13,19 @@ validity_req = ErrorsRequestDecorator()
 
 
 @controller_user.route('/users', methods=['GET'])
-@jwt_required
+# @jwt_required
 def get_all():
     user = UserHandler()
     return user.get_all_users()
 
 @controller_user.route('/user/username/<username>', methods=['GET'])
-@jwt_required
+# @jwt_required
 def get_by_username(username):
     user = UserHandler()
     return user.get_by_username(username)
 
 @controller_user.route('/user/id/<_id>', methods=['GET'])
-@jwt_required
+# @jwt_required
 def get_by_id(_id):
     user = UserHandler()
     return user.get_by_id(_id)

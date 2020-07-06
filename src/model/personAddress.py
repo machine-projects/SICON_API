@@ -1,6 +1,4 @@
 from src import db
-# from .person import Person
-# from .address import Address
 import datetime
 
 
