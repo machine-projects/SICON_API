@@ -25,7 +25,7 @@ class PersonAddressHandler:
         repository = PersonAddressRepository()
         person_address = repository.get_all_persons_address()
         valid_result = ValidationsAndSetStatusResultInfraHandler() 
-        return valid_result.default_result(person_address)
+        return valid_result.default(person_address)
 
     @staticmethod
     def get_by_person_id_address_id():
@@ -36,7 +36,7 @@ class PersonAddressHandler:
         repository = PersonAddressRepository()
         person_address = repository.get_by_person_id_address_id(playload)
         valid_result = ValidationsAndSetStatusResultInfraHandler() 
-        return valid_result.default_result(person_address)
+        return valid_result.default(person_address)
     
     @staticmethod
     def get_by_person_id():
@@ -47,7 +47,7 @@ class PersonAddressHandler:
         repository = PersonAddressRepository()
         person_address = repository.get_by_person_id(playload)
         valid_result = ValidationsAndSetStatusResultInfraHandler() 
-        return valid_result.default_result(person_address)
+        return valid_result.default(person_address)
 
     @staticmethod
     def create_person_address():
@@ -58,7 +58,7 @@ class PersonAddressHandler:
         repository = PersonAddressRepository()
         person_address = repository.update_person(playload)
         valid_result = ValidationsAndSetStatusResultInfraHandler() 
-        return valid_result.default_result(person_address)
+        return valid_result.default(person_address)
 
     @staticmethod
     def update_person_address():
@@ -69,7 +69,7 @@ class PersonAddressHandler:
         repository = PersonAddressRepository()
         person_address = repository.create_person(playload)
         valid_result = ValidationsAndSetStatusResultInfraHandler() 
-        return valid_result.default_result(person_address)
+        return valid_result.default(person_address)
     
     @staticmethod
     def delete_person_address():
@@ -80,4 +80,4 @@ class PersonAddressHandler:
         repository = PersonAddressRepository()
         person_address = repository.delete_person_address(playload)
         valid_result = ValidationsAndSetStatusResultInfraHandler() 
-        return valid_result.default_result(person_address)
+        return valid_result.default(person_address)

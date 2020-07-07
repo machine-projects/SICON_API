@@ -4,9 +4,10 @@ class ValidationsAndSetStatusResultInfraHandler:
         pass
 
     @staticmethod
-    def default_result(result):
-        if result['error'] and result['exeption']:
+    def default(result):
+        error = result.get('error')
+        if error and result.get('exeption'):
             return result, 500
-        if result['error']:
+        if error:
             return result, 406
         return result, 200

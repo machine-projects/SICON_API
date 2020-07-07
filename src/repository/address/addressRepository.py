@@ -22,8 +22,9 @@ class AddressRepository:
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
-    def get_by_person_id(self, person_id):
+    def get_by_person_id(self, playload):
         try:
+            person_id = playload.get('id')
             schema_address = address_fields
 
             person = Address.query.filter_by(person_id=person_id).all()

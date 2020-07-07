@@ -11,4 +11,4 @@ class DeleteAddressContract(ResultErrorModel):
             return self.valid()
         if _id and type(_id) != int:
             self.add_error('id', 'ID precisa ser inteiro.')
-      
+        return self.valid()

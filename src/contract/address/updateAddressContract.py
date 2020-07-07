@@ -18,11 +18,11 @@ class UpdateAdressContract(ResultErrorModel):
 
         if not _id:
             self.add_error('id', 'ID é obrigatorio.')
-        if _id and type(_id) == int:
+        if _id and type(_id) != int:
             self.add_error('id', 'ID precisa ser um inteiro.')
         if not person_id:
             self.add_error('person_id', 'O ID da pessoa é obrigatorio.')
-        if person_id and type(person_id) == int:
+        if person_id and type(person_id) != int:
             self.add_error('person_id', 'O ID da pessoa precisa ser um inteiro.')
         if not (neighborhood == None or type(neighborhood) == str):
             self.add_error('neighborhood', 'O bairro precisa ser uma string ou null.')

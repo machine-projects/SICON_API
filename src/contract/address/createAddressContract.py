@@ -17,7 +17,7 @@ class CreateAdressContract(ResultErrorModel):
 
          if not person_id:
             self.add_error('person_id', 'O ID da pessoa é obrigatorio.')
-         if person_id and type(person_id) == int:
+         if person_id and type(person_id) != int:
             self.add_error('person_id', 'O ID da pessoa precisa ser um inteiro.')
          if not (neighborhood == None or type(neighborhood) == str):
             self.add_error('neighborhood', 'O bairro precisa ser uma string ou null.')

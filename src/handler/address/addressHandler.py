@@ -10,63 +10,69 @@ from src.infra.model.resultModel import ResultModel
 from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
 from src.helper.personHelper import PersonHelper
 
-class PersonHandler:
+class AddressHandler:
 
     def __init__(self):
         pass
 
     def get_all_address(self):
         repository = AddressRepository()
-        persons = repository.get_all_address()
-        valid_result = ValidationsAndSetStatusResultInfraHandler()
-        return valid_result.default_result(persons)
+        address = repository.get_all_address()
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(address)
 
-    def get_by_id(self):
+    def get_by_id(self, playload):
+        _id = playload.get('id')
+        if _id: playload['id'] = int(_id)
         contract = GetByIdAddressContract()
-        playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = AddressRepository()
         person = repository.get_by_id(playload)
-        valid_result = ValidationsAndSetStatusResultInfraHandler()
-        return valid_result.default_result(person)
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(person)
     
-    def get_by_person_id(self, cnpj):
-        contract = GetByPersonIdAddressContract()
-        if not(contract.validate(cnpj)):
-            return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
+    def get_by_person_id(self, playload):
+        contract = GetByIdAddressContract()
+        _id = playload.get('id')
+        if _id: playload['id'] = int(_id)
+        if not(contract.validate(playload)):
+            return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = AddressRepository()
-        person = repository.get_by_cnpj_or_cnpj('Pessoa Juridica', cnpj)
-        valid_result = ValidationsAndSetStatusResultInfraHandler()
-        return valid_result.default_result(person)
+        address = repository.get_by_person_id(playload)
+        
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(address)
 
-    def update_person(self):
+    def update_address(self):
         contract = UpdateAdressContract()
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = AddressRepository()
-        person = repository.update_address(playload)
-        valid_result = ValidationsAndSetStatusResultInfraHandler()
-        return valid_result.default_result(person)
+        address = repository.update_address(playload)
+        
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(address)
 
-    def create_person(self):
+    def create_address(self):
         contract = CreateAdressContract()
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = AddressRepository()
-        person = repository.create_person(playload)
-        valid_result = ValidationsAndSetStatusResultInfraHandler()
-        return valid_result.default_result(person)
+        address = repository.create_address(playload)
+        
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(address)
     
-    def delete_person(self):
+    def delete_address(self):
         contract = DeleteAddressContract()
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = AddressRepository()
 
-        person = repository.delete_address(playload)
-        valid_result = ValidationsAndSetStatusResultInfraHandler()
-        return valid_result.default_result(person)
+        address = repository.delete_address(playload)
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(address)

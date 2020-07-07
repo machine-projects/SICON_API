@@ -31,7 +31,7 @@ validity_req = ErrorsRequestDecorator()
 #     return user.get_by_id(_id)
 
 @controller_user_and_dependencies.route('/completeuser', methods=['POST'])
-# @jwt.admin_required
+@jwt.admin_required
 @validity_req.body_is_json
 def post():
     user_and_dependencies = UserAndDependenciesHandler()

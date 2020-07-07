@@ -1,3 +1,5 @@
+
+
 class ResultModel:
 
     def __init__(self, message, data, error, exeption=False):
