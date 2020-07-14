@@ -1,4 +1,4 @@
-# Themisto Reports Authentication
+# Themisto Authentication
 
 `python version 3.7`
 
