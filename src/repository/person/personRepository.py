@@ -1,6 +1,5 @@
 from src import db
 from src.model.person import Person
-from src.model.personAddress import PersonAddress
 from src.model.address import Address
 from src.model.schemas.personSchemas import person_fields
 from flask_restful import marshal
@@ -29,6 +28,7 @@ class PersonRepository:
                 person = Person.query.filter_by(cpf=cpf_or_cnpj).first()
             elif _type == 'Pessoa Juridica':
                 person = Person.query.filter_by(cnpj=cpf_or_cnpj).first()
+                
             else: return ResultModel('Tipo de pessoa incorreto.', False, True).to_dict()
             data = marshal(person, schema_person)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
@@ -40,8 +40,23 @@ class PersonRepository:
         try:
             helper = GenericHelper()
             birth_date = data_person.get('birth_date')
+            cpf = data_person.get('cpf')
+            cnpj = data_person.get('cnpj')
             if birth_date:
                 data_person['birth_date'] = helper.str_date_to_datetime(birth_date)
+            if cpf:
+                find_cpf = Person.query.filter_by(cpf=cpf).first()
+               
+                if find_cpf: 
+                    return ResultModel(
+                    'Não foi possivel criar pessoa.',
+                     False, [dict(name='cpf', error='O CPF já foi cadastrado.')]).to_dict()
+            elif cnpj:
+                find_cnpj = Person.query.filter_by(cnpj=cnpj).first()
+                if find_cnpj: return ResultModel(
+                    'Não foi possivel criar pessoa.',
+                     False, [dict(name='cnpj', error='O CNPJ já foi cadastrado.')]).to_dict()
+
             person = Person(data_person)
             db.session.add(person)
             db.session.commit()
@@ -88,12 +103,6 @@ class PersonRepository:
     @staticmethod
     def delete_person(person_id):
         try:
-            persons_addresses = PersonAddress.query.filter_by(person_id=person_id).all()
-            if persons_addresses:
-                for person_address in persons_addresses:
-                    db.session.delete(person_address)
-                    db.session.commit()
-
             person = Person.query.get(person_id)
             if person:
                 db.session.delete(person)

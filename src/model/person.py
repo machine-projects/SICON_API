@@ -1,6 +1,5 @@
 from src import db
 # from src.model.users import User
-# from src.model.personAddress import PersonAddress
 import datetime
 
 
@@ -21,7 +20,6 @@ class Person(db.Model):
 
     # address = db.relationship("Address", backref=db.backref("address", lazy="dynamic"))
     # user = db.relationship("User", backref=db.backref("users", lazy="dynamic"))
-    # person_address = db.relationship("PesonAddress", backref=db.backref("person_address", lazy="dynamic"))
     # contact = db.relationship("Contact", backref=db.backref("contact", lazy="dynamic"))
 
     def __init__(self, data_person):

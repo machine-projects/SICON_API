@@ -3,7 +3,6 @@ from flask_migrate import Migrate
 from src.model.users import User
 from src.model.person import Person
 from src.model.address import Address
-from src.model.personAddress import PersonAddress
 from src.model.contact import Contact
 
 
@@ -18,7 +17,6 @@ def shell_context():
         User=User,
         Person=Person,
         Address=Address,
-        PersonAddress=PersonAddress,
         Contact=Contact
     )
 app.run(debug=True)

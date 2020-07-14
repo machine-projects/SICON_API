@@ -1,6 +1,6 @@
 from src import db
 from src.model.address import Address
-from src.model.personAddress import PersonAddress
+from src.model.person import Person
 from src.model.address import Address
 from src.model.schemas.addressSchemas import address_fields
 from flask_restful import marshal
@@ -90,9 +90,9 @@ class AddressRepository:
     def delete_address(address_dict):
         try:
             address_id = address_dict.get('id')
-            person_address = PersonAddress.query.filter_by(address_id=address_id).first()
-            if person_address:
-                db.session.delete(person_address)
+            person = Person.query.filter_by(address_id=address_id).first()
+            if person:
+                db.session.delete(person)
                 db.session.commit()
 
             address = Address.query.get(address_id)

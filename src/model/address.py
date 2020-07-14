@@ -16,7 +16,6 @@ class Address(db.Model):
     city = db.Column(db.String(128), index=True)
     creation_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
     modification_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
-    # person_address = db.relationship("PersonAddress",  backref=db.backref("person_address", lazy="dynamic"))
 
     def __init__(self, data):
         self.person_id = data.get('person_id')

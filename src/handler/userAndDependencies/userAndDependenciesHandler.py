@@ -1,15 +1,16 @@
-from flask_restful import Resource, marshal
-from src.model.users import User
 from src import db, request
+from src.model.users import User
 from src.model.schemas.users import users_fields
-from flask_bcrypt import Bcrypt
-from flask import current_app
 from src.repository.user.userRepository import UserRepository
 from src.repository.person.personRepository import PersonRepository
 from src.repository.address.addressRepository import AddressRepository
-from src.repository.personAdress.personAdressRepository import PersonAddressRepository
 from src.infra.model.resultModel import ResultModel
+from src.helper.personHelper import PersonHelper
+from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
 from src.contract.userAndDependencies.createUserAndpersonAndAddressContract import CreateUserAndpersonAndAddressContract
+from flask_restful import Resource, marshal
+from flask_bcrypt import Bcrypt
+from flask import current_app
 
 
 
@@ -27,8 +28,7 @@ class UserAndDependenciesHandler:
         user_repository = UserRepository()
         person_repository = PersonRepository()
         address_repository = AddressRepository()
-        person_address_repository = PersonAddressRepository()
-
+        status_result = ValidationsAndSetStatusResultInfraHandler()
         user_exist = user_repository.get_by_username(user_dto.get('username'))
         if user_exist['message'] != 'Nome de usuario não encontrado.':
             if user_exist.get('exeption'):
@@ -37,38 +37,35 @@ class UserAndDependenciesHandler:
                 username = user_dto.get('username')
                 return ResultModel(f'Usuario "{username}" já existe.', False, True).to_dict(), 406
             return user_exist, 406
-
+        cpf = person_dto.get('cpf')
+        cnpj = person_dto.get('cnpj')
+        person_helper = PersonHelper()
+        if cpf:
+            person_dto['cpf'] = person_helper.remove_characters(cpf)
+        elif cnpj:
+            person_dto['cnpj'] = person_helper.remove_characters(cnpj)
         person = person_repository.create_person(person_dto)
         if not person['data']:
-            return person, 500
+            return status_result.default(person)
         person = person['data']
         address_dto['person_id'] = person.get('id')
         address = address_repository.create_address(address_dto)
         if not address['data']:
-            return address, 500
+            return status_result.default(address)
+            
         address = address['data']
-        person_address_dto = dict(
-            person_id=person['id'],
-            address_id=address['id']
-        )
-        person_address = person_address_repository.create_person_address(person_address_dto)
-        if not person_address['data']:
-            return person_address, 500
-        person_address = person_address['data']
-        
         user_repository.create(user_dto)
         user_dto['person_id'] = person['id']
         user = user_repository.create(user_dto)
         if user['error']:
-            if user['exeption']:
-                return user, 500
-            return user, 406
+            return status_result.default(user)
         user = user['data']
 
         result = dict(
         user=user,
         person=person,
         address=address,
-        person_address=person_address
         )   
         return result, 200
+
+
