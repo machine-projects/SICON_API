@@ -18,7 +18,7 @@ def create_app(config_name):
     
 
     # imports
-    from src.controller.indexController import controller_index
+    from src.controller import controller_index
     app.register_blueprint(controller_index)
     from src.controller.userController import controller_user
     app.register_blueprint(controller_user)
