@@ -9,11 +9,15 @@ class ResultModel:
         self.exeption = exeption
     
 
-    def to_dict(self):
+    def to_dict(self, paginate=False):
         if self.error:
-            return {'message': self.message, 'data': self.data, 'error': self.error, 'exeption': self.exeption}
-        return {'message': self.message, 'data': self.data, 'error': self.error}
+            result = {'message': self.message, 'data': self.data, 'error': self.error, 'exeption': self.exeption}
+        result = {'message': self.message, 'data': self.data, 'error': self.error}
+        if paginate: 
+            result['paginate'] = paginate
+        return result
     
+
 
 class ResultErrorModel:
     

@@ -3,6 +3,7 @@ from src.model.address import Address
 from src.model.person import Person
 from src.model.address import Address
 from src.model.schemas.addressSchemas import address_fields
+from src.model.schemas import PAGINATE 
 from flask_restful import marshal
 from src.infra.model.resultModel import ResultModel
 import datetime
@@ -14,11 +15,15 @@ class AddressRepository:
         pass
 
     @staticmethod
-    def get_all_address():
+    def get_all_address(filter_paginate):
         try:
-            address = Address.query.all()
-            data = marshal(address, address_fields)
-            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
+            page = filter_paginate.get('page')
+            per_page = filter_paginate.get('per_page')
+
+            address = Address.query.filter().paginate(page, per_page)
+            data_paginate = marshal(address, PAGINATE )
+            data = marshal(address.items, address_fields)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 

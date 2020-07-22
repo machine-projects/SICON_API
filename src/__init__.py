@@ -30,5 +30,7 @@ def create_app(config_name):
     app.register_blueprint(controller_address)
     from src.controller.userAndDependenciesController import controller_user_and_dependencies
     app.register_blueprint(controller_user_and_dependencies)
+    from src.controller.systemController import controller_system
+    app.register_blueprint(controller_system)
 
     return app

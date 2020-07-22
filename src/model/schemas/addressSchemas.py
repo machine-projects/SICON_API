@@ -1,5 +1,7 @@
 from flask_restful import fields
 
+
+
 __id = 'id'
 __person_id = 'person_id'
 __neighborhood = 'neighborhood'
@@ -16,5 +18,7 @@ address_fields = {
         __street: fields.String,
         __number: fields.String,
         __complement: fields.String,
-        __city: fields.String,
+        __city: fields.String
     }
+
+

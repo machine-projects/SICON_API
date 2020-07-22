@@ -9,6 +9,7 @@ from src.contract.address.deleteAddressContract import DeleteAddressContract
 from src.infra.model.resultModel import ResultModel
 from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
 from src.helper.personHelper import PersonHelper
+from src.infra.handler.pagination import Paginate
 
 class AddressHandler:
 
@@ -17,7 +18,8 @@ class AddressHandler:
 
     def get_all_address(self):
         repository = AddressRepository()
-        address = repository.get_all_address()
+        paginate = Paginate().url_intercept_args(request)
+        address = repository.get_all_address(paginate)
         status_result = ValidationsAndSetStatusResultInfraHandler()
         return status_result.default(address)
 
