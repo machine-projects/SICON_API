@@ -19,4 +19,4 @@ def shell_context():
         Address=Address,
         Contact=Contact
     )
-eapp.run(debug=True)
+app.run(debug=True)
