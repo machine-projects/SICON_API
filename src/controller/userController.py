@@ -31,7 +31,7 @@ def get_by_id(_id):
     return user.get_by_id(_id)
 
 @controller_user.route('/user', methods=['POST'])
-# @jwt.admin_required
+@jwt.admin_required
 @validity_req.body_is_json
 def post():
     user = UserHandler()

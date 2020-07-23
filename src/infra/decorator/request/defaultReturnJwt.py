@@ -13,7 +13,7 @@ def config_decorators_jwt(jwt):
     @jwt.invalid_token_loader
     def invalid_token_callback(error):
         return ResultModel("Token invalido",False, [
-                dict(name='token', message='Falha na verificação do token.')
+                dict(name='token', message='O token não é valido.')
                 ]).to_dict(), 401
 
         
