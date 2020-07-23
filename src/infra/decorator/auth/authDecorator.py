@@ -9,7 +9,7 @@ class AuthDecorator:
             verify_jwt_in_request()
             claims = get_jwt_claims()
             if claims['is_admin'] != True:
-                return {'msg': 'Requer permissão do tipo ADMIN', 'error': True, 'data': False}, 403
+                return {'msg': 'Requer permissão do tipo ADMIN', 'error': True, 'data': {'result': False}}, 403
             else:
                 return fn(*args, **kwargs)
         return wrapper

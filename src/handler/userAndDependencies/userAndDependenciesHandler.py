@@ -45,21 +45,21 @@ class UserAndDependenciesHandler:
         elif cnpj:
             person_dto['cnpj'] = person_helper.remove_characters(cnpj)
         person = person_repository.create_person(person_dto)
-        if not person['data']:
+        if not person['data']['result']:
             return status_result.default(person)
-        person = person['data']
+        person = person['data']['result']
         address_dto['person_id'] = person.get('id')
         address = address_repository.create_address(address_dto)
-        if not address['data']:
+        if not address['data']['result']:
             return status_result.default(address)
             
-        address = address['data']
+        address = address['data']['result']
         user_repository.create(user_dto)
         user_dto['person_id'] = person['id']
         user = user_repository.create(user_dto)
         if user['error']:
             return status_result.default(user)
-        user = user['data']
+        user = user['data']['result']
 
         result = dict(
         user=user,

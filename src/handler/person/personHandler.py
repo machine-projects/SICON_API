@@ -17,9 +17,9 @@ class PersonHandler:
     def get_all_persons(self):
         repository = PersonRepository()
         persons = repository.get_all_persons()
-        if persons['error']:
-            return persons, 500
-        return persons, 200
+        
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(person)
 
     def get_by_cpf(self, cpf):
         contract = GetByCpfPersonContract()
@@ -27,9 +27,9 @@ class PersonHandler:
             return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
         repository = PersonRepository()
         persons = repository.get_by_cpf_or_cnpj('Pessoa Fisica', cpf)
-        if persons['error']:
-            return persons, 500
-        return persons, 200
+        
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(person)
     
     def get_by_cnpj(self, cnpj):
         contract = GetByCnpjPersonContract()
@@ -37,9 +37,9 @@ class PersonHandler:
             return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
         repository = PersonRepository()
         persons = repository.get_by_cnpj_or_cnpj('Pessoa Juridica', cnpj)
-        if persons['error']:
-            return persons, 500
-        return persons, 200
+        
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(person)
 
     def update_person(self):
         contract = UpdatePersonContract()
@@ -49,9 +49,9 @@ class PersonHandler:
         repository = PersonRepository()
 
         person = repository.update_person(playload)
-        if person['error']:
-            return person, 500
-        return person, 200
+        
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(person)
 
     def create_person(self):
         contract = CreatePersonContract()
@@ -68,9 +68,10 @@ class PersonHandler:
             playload['cnpj'] =  helper.remove_characters(cnpj)
         
         person = repository.create_person(playload)
-        if person['error']:
-            return person, 500
-        return person, 200
+        
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(person)
+        
     
     def delete_person(self):
         contract = DeletePersonContract()
@@ -80,6 +81,6 @@ class PersonHandler:
         repository = PersonRepository()
 
         person = repository.delete_person(playload.get('id'))
-        if person['error']:
-            return person, 500
-        return person, 200
+        
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(person)

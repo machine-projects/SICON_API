@@ -21,7 +21,7 @@ class AuthHandler:
         bcrypt = Bcrypt(current_app)
         crypt_password =  bcrypt.generate_password_hash(password).decode('utf-8')
         repository = UserRepository()
-        user = repository.get_by_username(playload.get('username'), True)['data']
+        user = repository.get_by_username(playload.get('username'), True)['data']['result']
         if not user:
             ResultModel('Usuario não existe.', False, True)
         if not user or not bcrypt.check_password_hash(user['password'], password):

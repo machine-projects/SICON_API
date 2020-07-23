@@ -35,3 +35,11 @@ class Paginate:
         per_page = self.__valid_params(per_page, 10)
         
         return dict(page=page, per_page=per_page)
+    
+    def include_paginate_args_playload(self, request, playload):
+        paginate = self.url_intercept_args(request)
+        return {**playload, **paginate}
+    
+    def include_paginate_params_playload(self, request, playload):
+        paginate = self.body_intercept_params(request)
+        return {**playload, **paginate}

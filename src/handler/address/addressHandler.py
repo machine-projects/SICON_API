@@ -30,6 +30,7 @@ class AddressHandler:
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = AddressRepository()
+        
         person = repository.get_by_id(playload)
         status_result = ValidationsAndSetStatusResultInfraHandler()
         return status_result.default(person)
@@ -41,6 +42,7 @@ class AddressHandler:
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = AddressRepository()
+        playload = Paginate().include_paginate_args_playload(request, playload)
         address = repository.get_by_person_id(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()

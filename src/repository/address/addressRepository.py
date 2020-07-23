@@ -15,10 +15,10 @@ class AddressRepository:
         pass
 
     @staticmethod
-    def get_all_address(filter_paginate):
+    def get_all_address(playload):
         try:
-            page = filter_paginate.get('page')
-            per_page = filter_paginate.get('per_page')
+            page = playload.get('page')
+            per_page = playload.get('per_page')
 
             address = Address.query.filter().paginate(page, per_page)
             data_paginate = marshal(address, PAGINATE )
@@ -32,9 +32,13 @@ class AddressRepository:
             person_id = playload.get('id')
             schema_address = address_fields
 
-            person = Address.query.filter_by(person_id=person_id).all()
-            data = marshal(person, schema_address)
-            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
+            page = playload.get('page')
+            per_page = playload.get('per_page')
+
+            person = Address.query.filter_by(person_id=person_id).paginate(page, per_page)
+            data_paginate = marshal(person, PAGINATE)
+            data = marshal(person.items, schema_address)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
     
