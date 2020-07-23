@@ -4,6 +4,7 @@ from src import db
 from flask_bcrypt import Bcrypt
 from flask import current_app
 from flask_restful import marshal
+from src.model.schemas import PAGINATE
 from src.model.schemas.users import users_fields, users_fields_with_pass
 from src.infra.model.resultModel import ResultModel
 
@@ -11,11 +12,15 @@ from src.infra.model.resultModel import ResultModel
 class UserRepository:
     
 
-    def get_all(self):
+    def get_all(self, playload):
         try:
-            users = User.query.all()
-            data = marshal(users, users_fields)
-            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
+            page = playload.get('page')
+            per_page = playload.get('per_page')
+
+            users = User.query.filter().paginate(page, per_page)
+            data_paginate = marshal(users, PAGINATE)
+            data = marshal(users.items, users_fields)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 

@@ -2,12 +2,15 @@ from flask_restful import Resource, marshal
 from src.repository.person.personRepository import PersonRepository
 from src import db, request
 from src.infra.model.resultModel import ResultModel
+from src.infra.handler.pagination import Paginate
 from src.contract.peson.getByCpfPersonContract import GetByCpfPersonContract
 from src.contract.peson.getByCnpjPersonContract import GetByCnpjPersonContract
 from src.contract.peson.createPersonContract import CreatePersonContract
 from src.contract.peson.updatePersonContract import UpdatePersonContract
 from src.contract.peson.deletePersonContract import DeletePersonContract
 from src.helper.personHelper import PersonHelper
+from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
+
 
 class PersonHandler:
 
@@ -16,10 +19,11 @@ class PersonHandler:
 
     def get_all_persons(self):
         repository = PersonRepository()
-        persons = repository.get_all_persons()
+        playload = Paginate().include_paginate_args_playload(request, {})
+        persons = repository.get_all_persons(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(person)
+        return status_result.default(persons)
 
     def get_by_cpf(self, cpf):
         contract = GetByCpfPersonContract()

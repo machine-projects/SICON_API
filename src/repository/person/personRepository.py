@@ -1,23 +1,27 @@
 from src import db
 from src.model.person import Person
 from src.model.address import Address
+from src.model.schemas import PAGINATE
 from src.model.schemas.personSchemas import person_fields
 from flask_restful import marshal
 from src.infra.model.resultModel import ResultModel
 import datetime
 from src.helper.genericHelper import GenericHelper
-
 class PersonRepository:
     
     def __init__(self):
         pass
 
     @staticmethod
-    def get_all_persons():
+    def get_all_persons(playload):
         try:
-            persons = Person.query.all()
-            data = marshal(persons, person_fields)
-            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
+            page = playload.get('page')
+            per_page = playload.get('per_page')
+
+            persons = Person.query.filter().paginate(page, per_page)
+            data_pagination = marshal(persons, PAGINATE)
+            data = marshal(persons.items, person_fields)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_pagination)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 

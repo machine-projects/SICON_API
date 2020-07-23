@@ -11,12 +11,13 @@ from src.contract.user.updateUserContract import UpdateUserContract
 from src.contract.user.deleteUserContract import DeleteUserContract
 from src.contract.user.getByIdUserContract import GetByIdUserContract
 from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
-
+from src.infra.handler.pagination import Paginate
 
 class UserHandler:
     def get_all_users(self):
         user = UserRepository()
-        users = user.get_all()
+        playload = Paginate().include_paginate_args_playload(request, {})
+        users = user.get_all(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
         return status_result.default(users)
