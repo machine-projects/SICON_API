@@ -17,6 +17,7 @@ class User(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     person_id = db.Column(db.Integer, primary_key=True, nullable=False)
     person = db.relationship("Person")
+
     username = db.Column(db.String(40), nullable=False,
                          unique=True, index=True)
     password = db.Column(db.String(128), nullable=False)
