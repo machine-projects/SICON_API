@@ -2,8 +2,8 @@ from src import db
 import datetime
 
 
-class ProfileSytem(db.Model):
-    __tablename__ = 'profileSytem'
+class ProfileSystem(db.Model):
+    __tablename__ = 'profileSystem'
   
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 

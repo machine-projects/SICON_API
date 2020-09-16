@@ -4,6 +4,11 @@ from src.model.users import User
 from src.model.person import Person
 from src.model.address import Address
 from src.model.contact import Contact
+from src.model.system import System
+from src.model.sytemPermission import SystemPermission
+from src.model.profilePermission import ProfilePermission
+from src.model.profileSystem import ProfileSystem
+from src.model.userProfileSytem import UserProfileSytem
 
 
 app = create_app('dev')
@@ -17,6 +22,12 @@ def shell_context():
         User=User,
         Person=Person,
         Address=Address,
-        Contact=Contact
+        Contact=Contact,
+
+        System=System,
+        SystemPermission=SystemPermission,
+        ProfilePermission=ProfilePermission,
+        ProfileSystem=ProfileSystem,
+        UserProfileSytem=UserProfileSytem,
     )
 app.run(debug=True)
