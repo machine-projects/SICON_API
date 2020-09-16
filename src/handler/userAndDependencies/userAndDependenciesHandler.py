@@ -4,10 +4,12 @@ from src.model.schemas.users import users_fields
 from src.repository.user.userRepository import UserRepository
 from src.repository.person.personRepository import PersonRepository
 from src.repository.address.addressRepository import AddressRepository
+from src.repository.userAndDependencies.UserAndDependenciesRepository import UserAndDependenciesRepository
 from src.infra.model.resultModel import ResultModel
 from src.helper.personHelper import PersonHelper
 from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
 from src.contract.userAndDependencies.createUserAndpersonAndAddressContract import CreateUserAndpersonAndAddressContract
+from src.contract.userAndDependencies.getUserAndpersonAndAddressContract import GetUserAndpersonAndAddressContract
 from flask_restful import Resource, marshal
 from flask_bcrypt import Bcrypt
 from flask import current_app
@@ -68,4 +70,12 @@ class UserAndDependenciesHandler:
         )   
         return result, 200
 
+    def get_user_person_address(self):
+        contract = GetUserAndpersonAndAddressContract()
+        playload = request.args
+        if not(contract.validate(playload)):
+            return ResultModel('Envie ao menos um parametro.', False, contract.errors).to_dict(), 406
+        repository = UserAndDependenciesRepository()
+        return repository.get(playload)
+        
 

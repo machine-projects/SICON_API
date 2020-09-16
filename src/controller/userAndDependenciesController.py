@@ -37,6 +37,12 @@ def post():
     user_and_dependencies = UserAndDependenciesHandler()
     return user_and_dependencies.create_user_person_address()
 
+@controller_user_and_dependencies.route('/completeuser', methods=['GET'])
+# @jwt.admin_required
+def get():
+    user_and_dependencies = UserAndDependenciesHandler()
+    return user_and_dependencies.get_user_person_address()
+
 # @controller_user_and_dependencies.route('/user', methods=['PUT'])
 # @jwt.admin_required
 # @validity_req.body_is_json
