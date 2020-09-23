@@ -22,23 +22,15 @@ class SystemRepository:
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
-    def get_by_name(self, name, witch_dates=False):
+    def get_search_by_params(self, playload, witch_dates=False):
         try:
-            schemas_system = system_fields
-            if witch_dates:
-                schemas_system = system_fields_with_dates
-        
-            system = System.query.filter_by(name=name).all()
-            data = marshal(system, schemas_system)
-            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
-        except Exception as e:
-            return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
-            
-    def get_by_id(self, _id):
-        try:
-            system = System.query.get(_id)
-            data = marshal(system, system_fields)
-            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
+            page = playload.get('page')
+            per_page = playload.get('per_page')
+           
+            system = System.query.filter_by(playload).all()
+            data_paginate = marshal(system, PAGINATE)
+            data = marshal(system.items, system_fields)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
