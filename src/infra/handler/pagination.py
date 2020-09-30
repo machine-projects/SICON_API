@@ -36,7 +36,7 @@ class Paginate:
         
         return dict(page=page, per_page=per_page)
     
-    def include_paginate_args_playload(self, request, playload):
+    def include_paginate_args_playload(self, request, playload={}):
         paginate = self.url_intercept_args(request)
         return {**playload, **paginate}
     
