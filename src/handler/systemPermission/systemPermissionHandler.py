@@ -1,80 +1,80 @@
-from src.repository.system.systemRepository import SystemRepository
+from src.repository.systemPermission.systemPermissionRepository import SystemPermissionRepository
 from src import request
 from src.infra.model.resultModel import ResultModel
 from src.infra.handler.pagination import Paginate
-from src.contract.system.createSystemContract import CreateSystemContract
-from src.contract.system.getByParamsSystemContract import GetByParamsSystemContract
-from src.contract.system.updateSystemContract import UpdateSystemContract
-from src.contract.system.deleteSystemContract import DeleteSystemContract
+from src.contract.systemPermission.getByParamsSystemPermissionContract import GetByParamsSystemPermissionContract
+from src.contract.systemPermission.updateSystemPermissionContract import UpdateSystemPermissionContract
+from src.contract.systemPermission.createSystemPermissionContract import CreateSystemPermissionContract
+from src.contract.systemPermission.deleteSystemPermissionContract import DeleteSystemPermissionContract
 from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
 
 
-class SystemHandler:
+class SystemPermission:
 
     def __init__(self):
         pass
 
     def get_all(self):
-        repository = SystemRepository()
+        repository = SystemPermissionRepository()
         playload = Paginate().include_paginate_args_playload(request)
-        systems = repository.get_all_systems(playload)
+        system_permission = repository.get_all(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(systems)
+        return status_result.default(system_permission)
 
     def get_by_params(self):
-        contract = GetByParamsSystemContract()
+        contract = GetByParamsSystemPermissionContract()
         playload = request.args
         if not(contract.validate(playload)):
             return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
         params_filter = {}
         _id = playload.get('id')
         name = playload.get('name')
-        url = playload.get('url')
+        system_id = playload.get('system_id')
 
         if _id:
             params_filter['id'] = _id
         if name:
             params_filter['name'] = name
-        if url:
-            params_filter['url'] = url
+        if system_id:
+            params_filter['system_id'] = system_id
         
-        repository = SystemRepository()
-        systems = repository.get_search_by_params(params_filter)
+        repository = SystemPermissionRepository()
+        system_permission = repository.get_search_by_params(params_filter)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(systems)
+        return status_result.default(system_permission)
     
     def update(self):
-        contract = UpdateSystemContract()
+        contract = UpdateSystemPermissionContract()
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
-        repository = SystemRepository()
+        repository = SystemPermissionRepository()
 
-        system = repository.update(playload)
+        system_permission = repository.update(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(system)
+        return status_result.default(system_permission)
 
     def create(self):
-        contract = CreateSystemContract()
+        contract = CreateSystemPermissionContract()
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
-        repository = SystemRepository()
-        system = repository.create(playload)
+        repository = SystemPermissionRepository()
+        system_permission = repository.create(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(system)
+        return status_result.default(system_permission)
         
     
     def delete(self):
-        contract = DeleteSystemContract()
+        contract = DeleteSystemPermissionContract()
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
-        repository = SystemRepository()
+        repository = SystemPermissionRepository()
 
         system = repository.delete(playload.get('id'))
         
