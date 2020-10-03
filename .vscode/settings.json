@@ -2,5 +2,7 @@
     "files.exclude": {
         "**/__pycache__": true
     },
-    "python.pythonPath": "C:\\Users\\felip\\.virtualenvs\\themistoAuthenticate-3eFtIwHE\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Users\\felip\\.virtualenvs\\themistoAuthenticate-3eFtIwHE\\Scripts\\python.exe",
+    "workbench.colorTheme": "Darcula Pycharm with Dark GUI"
+    
 }

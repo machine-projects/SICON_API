@@ -5,6 +5,7 @@ from src.repository.userProfileSystem.userProfileSystemRepository import UserPro
 from src import request
 from src.infra.model.resultModel import ResultModel
 from src.infra.handler.pagination import Paginate
+from src.contract.profileSystemAndDependencies.getByIDProfileSystemAndDependenciesContract import GetByIdProfileSystemAndDependenciesContract
 from src.contract.profileSystemAndDependencies.createProfileSystemAndDependenciesContract import CreateProfileSystemAndDependenciesContract
 from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
 
@@ -66,28 +67,31 @@ class ProfileSystemAndDependenciesHandler:
         return status_result.default(data)
         
 
-    # def get_by_params(self):
-    #     contract = GetByParamsSystemContract()
-    #     playload = request.args
-    #     if not(contract.validate(playload)):
-    #         return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
-    #     params_filter = {}
-    #     _id = playload.get('id')
-    #     name = playload.get('name')
-    #     url = playload.get('url')
+    def get_by_id(self):
+        contract = GetByIdProfileSystemAndDependenciesContract()
+        playload = request.json
+        if not(contract.validate(playload)):
+            return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
+        _id = playload.get('id')
 
-    #     if _id:
-    #         params_filter['id'] = _id
-    #     if name:
-    #         params_filter['name'] = name
-    #     if url:
-    #         params_filter['url'] = url
+        repo_prof_sys = ProfileSystemRepository()
+        profile_system_db_result = repo_prof_sys.get_search_by_params({'id':_id})
+        if not profile_system_db_result['data']['result']:
+            return ResultModel('ID não encontrado.', False, contract.errors).to_dict(), 406
+        profile_system = profile_system_db_result['data']['result']
         
-    #     repository = SystemRepository()
-    #     systems = repository.get_search_by_params(params_filter)
-        
-    #     status_result = ValidationsAndSetStatusResultInfraHandler()
-    #     return status_result.default(systems)
+        repo_prof_permi = ProfilePermissionRepository()
+        profile_permission = repo_prof_permi.get_search_by_params({'profile_system_id':_id})['data']['result']
+        repo_user_prof_system = UserProfileSystemRepository()
+        user_profile_system = repo_user_prof_system.get_search_by_params({'profile_system_id':_id})['data']['result']
+
+        data = dict(
+            profile_system=profile_system,
+            profile_permission=profile_permission,
+            user_profile_system=user_profile_system
+        )
+        status_result = ValidationsAndSetStatusResultInfraHandler()
+        return status_result.default(data)
     
     # def delete(self):
     #     contract = DeleteSystemContract()

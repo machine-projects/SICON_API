@@ -19,7 +19,6 @@ class GetByParamsSystemPermissionContract(ResultErrorModel):
             self.add_error('system_id', 'O ID do sistema precisa ser um inteiro.')
         if name and type(name) != str:
             self.add_error('name', 'O nome precisa ser uma string.')
-        
         if not _id and not name and not system_id:
             self.add_error('id, name, system_id', 'É obrigatorio o envio de nominimo um parametro.')
 

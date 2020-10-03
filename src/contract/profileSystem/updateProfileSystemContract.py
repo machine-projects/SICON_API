@@ -2,7 +2,7 @@ from src.infra.model.resultModel import ResultErrorModel
 from src.helper.personHelper import PersonHelper
 from src.helper.genericHelper import GenericHelper
 
-class UpdateSystemPermissionContract(ResultErrorModel):
+class UpdateProfileSystemContract(ResultErrorModel):
     def __init__(self):
         super().__init__()
 
@@ -10,22 +10,21 @@ class UpdateSystemPermissionContract(ResultErrorModel):
         _id = data.get('id')
         name = data.get('name')
         description = data.get('description')
-        system_id = data.get('system_id')
+        url = data.get('url')
         
-       
-        if _id:
-            self.add_error('_id', 'O id é obrigatorio.')
+        if not _id:
+            self.add_error('id', 'O ID é obrigatorio.')
         if _id and type(_id) != int:
-            self.add_error('_id', 'O id precisa ser um inteiro.')
+            self.add_error('id', 'O ID precisa ser um inteiro.')
         if not name:
             self.add_error('name', 'O nome é obrigatorio.')
         if name and type(name) != str:
             self.add_error('name', 'O nome precisa ser uma string.')
+        if not url:
+            self.add_error('url', 'O url é obrigatorio.')
+        if url and type(url) != str:
+            self.add_error('url', 'O url precisa ser uma string.')
         if description and type(description) != str:
-            self.add_error('description', 'A descrição precisa ser uma string.')
-        if system_id:
-            self.add_error('system_id', 'O ID do sistema é obrigatorio.')
-        if system_id and type(system_id) != int:
-            self.add_error('system_id', 'O ID do sistema precisa ser um inteiro.')
-            
+            self.add_error('description', 'O descrição precisa ser uma string ou null.')
+
         return self.valid()
