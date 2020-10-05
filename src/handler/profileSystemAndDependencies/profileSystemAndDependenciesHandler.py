@@ -67,12 +67,12 @@ class ProfileSystemAndDependenciesHandler:
         return status_result.default(data)
         
 
-    def get_by_id(self):
+    def get_by_id(self, _id):
         contract = GetByIdProfileSystemAndDependenciesContract()
         playload = request.json
-        if not(contract.validate(playload)):
+        if not(contract.validate(_id)):
             return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
-        _id = playload.get('id')
+        
 
         repo_prof_sys = ProfileSystemRepository()
         profile_system_db_result = repo_prof_sys.get_search_by_params({'id':_id})

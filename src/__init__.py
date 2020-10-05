@@ -32,5 +32,15 @@ def create_app(config_name):
     app.register_blueprint(controller_address)
     from src.controller.system.systemController import controller_system
     app.register_blueprint(controller_system)
+    from src.controller.systemPermission.systemPermissionController import controller_system_permission
+    app.register_blueprint(controller_system_permission)
+    from src.controller.profileSystem.profileSystemController import controller_profile_system
+    app.register_blueprint(controller_profile_system)
+    from src.controller.profilePermission.profilePermissionController import controller_profile_permission
+    app.register_blueprint(controller_profile_permission)
+    from src.controller.profileSystem.profileSystemAndDependenciesController import controller_profile_system_and_dependencies
+    app.register_blueprint(controller_profile_system_and_dependencies)
+    from src.controller.userProfileSystem.userProfileSystemController import controller_user_profile_system
+    app.register_blueprint(controller_user_profile_system)
 
     return app

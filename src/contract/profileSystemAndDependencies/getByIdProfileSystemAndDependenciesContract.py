@@ -6,8 +6,7 @@ class GetByIdProfileSystemAndDependenciesContract(ResultErrorModel):
     def __init__(self):
         super().__init__()
 
-    def validate(self, data):
-        _id = data.get('id')
+    def validate(self, _id):
 
         if not _id:
             self.add_error('id', 'O ID do perfil é obrigatorio.')
