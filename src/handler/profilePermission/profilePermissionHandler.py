@@ -17,10 +17,10 @@ class ProfilePermissionHandler:
     def get_all(self):
         repository = ProfilePermissionRepository()
         playload = Paginate().include_paginate_args_playload(request)
-        system_permission = repository.get_all(playload)
+        profile_permission = repository.get_all(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(system_permission)
+        return status_result.default(profile_permission)
 
     def get_by_params(self):
         contract = GetByParamsProfilePermissionContract()
@@ -37,10 +37,10 @@ class ProfilePermissionHandler:
             params_filter['system_permision_id'] = system_permision_id
         
         repository = ProfilePermissionRepository()
-        system_permission = repository.get_search_by_params(params_filter)
+        profile_permission = repository.get_search_by_params(params_filter)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(system_permission)
+        return status_result.default(profile_permission)
     
     def update(self):
         contract = UpdateProfilePermissionContract()
@@ -49,10 +49,10 @@ class ProfilePermissionHandler:
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = ProfilePermissionRepository()
 
-        system_permission = repository.update(playload)
+        profile_permission = repository.update(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(system_permission)
+        return status_result.default(profile_permission)
 
     def create(self):
         contract = CreateProfilePermissionContract()
@@ -60,10 +60,10 @@ class ProfilePermissionHandler:
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = ProfilePermissionRepository()
-        system_permission = repository.create(playload)
+        profile_permission = repository.create(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(system_permission)
+        return status_result.default(profile_permission)
         
     
     def delete(self):
@@ -73,7 +73,7 @@ class ProfilePermissionHandler:
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = ProfilePermissionRepository()
 
-        system = repository.delete(playload.get('id'))
+        profile_permission = repository.delete(playload.get('id'))
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(system)
+        return status_result.default(profile_permission)
