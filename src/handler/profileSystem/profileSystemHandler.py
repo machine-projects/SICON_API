@@ -17,7 +17,7 @@ class ProfileSystemHandler:
 
     def get_all(self):
         repository = ProfileSystemRepository()
-        playload = Paginate().include_paginate_args_playload(request, {})
+        playload = Paginate().include_paginate_args_playload(request)
         profiles_systems = repository.get_all_profiles_systems(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()

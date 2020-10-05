@@ -16,7 +16,7 @@ from src.infra.handler.pagination import Paginate
 class UserHandler:
     def get_all_users(self):
         user = UserRepository()
-        playload = Paginate().include_paginate_args_playload(request, {})
+        playload = Paginate().include_paginate_args_playload(request)
         users = user.get_all(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()

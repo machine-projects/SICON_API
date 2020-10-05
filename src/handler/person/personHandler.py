@@ -19,7 +19,7 @@ class PersonHandler:
 
     def get_all_persons(self):
         repository = PersonRepository()
-        playload = Paginate().include_paginate_args_playload(request, {})
+        playload = Paginate().include_paginate_args_playload(request)
         persons = repository.get_all_persons(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
