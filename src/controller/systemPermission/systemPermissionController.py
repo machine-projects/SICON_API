@@ -16,9 +16,9 @@ validity_req = ErrorsRequestDecorator()
 def get_all():
     return  SystemPermission().get_all() 
 
-@controller_system_permission.route('/systempermission/params>', methods=['GET'])
+@controller_system_permission.route('/systempermission/params', methods=['GET'])
 @jwt_required
-def get_by_params(cpf):
+def get_by_params():
     return  SystemPermission().get_by_params() 
 
 @controller_system_permission.route('/systempermission', methods=['PUT'])

@@ -16,7 +16,7 @@ validity_req = ErrorsRequestDecorator()
 def get_all():
     return  ProfileSystem().get_all() 
 
-@controller_profile_permission.route('/profilepermission/params>', methods=['GET'])
+@controller_profile_permission.route('/profilepermission/params', methods=['GET'])
 @jwt_required
 def get_by_params(cpf):
     return  ProfileSystem().get_by_params() 

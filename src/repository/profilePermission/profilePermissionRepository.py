@@ -3,7 +3,7 @@ from src import db
 from flask import current_app
 from flask_restful import marshal
 from src.model.schemas import PAGINATE
-from src.model.schemas.systemPermission import profile_permission_fields
+from src.model.schemas.profilePermission import profile_permission_fields
 from src.infra.model.resultModel import ResultModel
 
 
