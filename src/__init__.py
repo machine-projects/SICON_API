@@ -20,17 +20,17 @@ def create_app(config_name):
     # imports
     from src.controller import controller_index
     app.register_blueprint(controller_index)
-    from src.controller.userController import controller_user
+    from src.controller.user.userController import controller_user
     app.register_blueprint(controller_user)
-    from src.controller.authController import controller_auth
-    app.register_blueprint(controller_auth)
-    from src.controller.personController import controller_person
-    app.register_blueprint(controller_person)
-    from src.controller.addressController import controller_address
-    app.register_blueprint(controller_address)
-    from src.controller.userAndDependenciesController import controller_user_and_dependencies
+    from src.controller.user.userAndDependenciesController import controller_user_and_dependencies
     app.register_blueprint(controller_user_and_dependencies)
-    from src.controller.systemController import controller_system
+    from src.controller.auth.authController import controller_auth
+    app.register_blueprint(controller_auth)
+    from src.controller.person.personController import controller_person
+    app.register_blueprint(controller_person)
+    from src.controller.address.addressController import controller_address
+    app.register_blueprint(controller_address)
+    from src.controller.system.systemController import controller_system
     app.register_blueprint(controller_system)
 
     return app
