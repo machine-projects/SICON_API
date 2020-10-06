@@ -24,7 +24,7 @@ class UserRepository:
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
-    def get_by_username(self, username, witch_password=False):
+    def     get_by_username(self, username, witch_password=False):
         try:
             schemas_user = users_fields
             if witch_password:

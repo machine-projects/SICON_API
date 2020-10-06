@@ -1,4 +1,4 @@
-from src.model.userProfileSytem import UserProfileSytem
+from src.model.userProfileSystem import UserProfileSystem
 from src import db
 from flask import current_app
 from flask_restful import marshal
@@ -15,7 +15,7 @@ class UserProfileSystemRepository:
             page = playload.get('page')
             per_page = playload.get('per_page')
 
-            user_profile_system = UserProfileSytem.query.filter().paginate(page, per_page)
+            user_profile_system = UserProfileSystem.query.filter().paginate(page, per_page)
             data_paginate = marshal(user_profile_system, PAGINATE)
             data = marshal(user_profile_system.items, user_profile_system_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
@@ -27,7 +27,7 @@ class UserProfileSystemRepository:
             page = playload.get('page')
             per_page = playload.get('per_page')
            
-            user_profile_system = UserProfileSytem.query.filter_by(playload).all()
+            user_profile_system = UserProfileSystem.query.filter_by(playload).all()
             data_paginate = marshal(user_profile_system, PAGINATE)
             data = marshal(user_profile_system.items, user_profile_system_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
@@ -39,11 +39,11 @@ class UserProfileSystemRepository:
             user_id = playload.get('user_id')
             profile_system_id = playload.get('profile_system_id')
 
-            user_profile_system_exist = UserProfileSytem.query.filter_by(user_id=user_id, profile_system_id=profile_system_id).first()
+            user_profile_system_exist = UserProfileSystem.query.filter_by(user_id=user_id, profile_system_id=profile_system_id).first()
             if user_profile_system_exist:
                 return ResultModel(f'Esses dados já foram cadastrados.', False, True).to_dict()
            
-            user_profile_system = UserProfileSytem(playload)
+            user_profile_system = UserProfileSystem(playload)
             db.session.add(user_profile_system)
             db.session.commit()
             data = marshal(user_profile_system, user_profile_system_fields)
@@ -57,7 +57,7 @@ class UserProfileSystemRepository:
             _id = playload.get('id')
             user_id = playload.get('user_id')
             profile_system_id = playload.get('profile_system_id')
-            user_profile_system = UserProfileSytem.query.get(_id)
+            user_profile_system = UserProfileSystem.query.get(_id)
             if not user_profile_system:
                 return ResultModel('Id não encontrado.', False, True).to_dict()
             
@@ -72,7 +72,7 @@ class UserProfileSystemRepository:
 
     def delete(self, _id):
         try:
-            user_profile_system = UserProfileSytem.query.get(_id)
+            user_profile_system = UserProfileSystem.query.get(_id)
             if not user_profile_system:
                 return ResultModel('Não encontrado.', False, True).to_dict()
             db.session.delete(user_profile_system)

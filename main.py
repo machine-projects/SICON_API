@@ -8,7 +8,7 @@ from src.model.system import System
 from src.model.sytemPermission import SystemPermission
 from src.model.profilePermission import ProfilePermission
 from src.model.profileSystem import ProfileSystem
-from src.model.userProfileSytem import UserProfileSytem
+from src.model.userProfileSystem import UserProfileSystem
 
 
 app = create_app('dev')
@@ -28,6 +28,6 @@ def shell_context():
         SystemPermission=SystemPermission,
         ProfilePermission=ProfilePermission,
         ProfileSystem=ProfileSystem,
-        UserProfileSytem=UserProfileSytem,
+        UserProfileSystem=UserProfileSystem,
     )
 app.run(debug=True)

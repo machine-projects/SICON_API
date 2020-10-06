@@ -8,7 +8,6 @@ class Address(db.Model):
   
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     person_id = db.Column(db.Integer, db.ForeignKey("person.id"), nullable=False)
-    person = db.relationship("Person",  backref=db.backref("person", lazy="dynamic"))
     neighborhood = db.Column(db.String(128), index=True)
     street = db.Column(db.String(128), index=True)
     number = db.Column(db.String(20), index=True)
@@ -16,6 +15,9 @@ class Address(db.Model):
     city = db.Column(db.String(128), index=True)
     creation_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
     modification_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
+    
+    person = db.relationship("Person", back_populates="address")
+
 
     def __init__(self, data):
         self.person_id = data.get('person_id')

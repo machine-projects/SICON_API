@@ -7,23 +7,23 @@ import datetime
 
 class User(db.Model):
     __tablename__ = 'users'
-    __table_args__ = (
-        db.ForeignKeyConstraint(
-            ["person_id"],
-            ["person.id"],
-        ),
-    )
+    # __table_args__ = (
+    #     db.ForeignKeyConstraint(
+    #         ["person_id"],
+    #         ["person.id"],
+    #     ),
+    # )
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    person_id = db.Column(db.Integer, primary_key=True, nullable=False)
-    person = db.relationship("Person")
-
-    username = db.Column(db.String(40), nullable=False,
-                         unique=True, index=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
+    username = db.Column(db.String(40), nullable=False, unique=True, index=True)
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean(), nullable=False)
     creation_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
     modification_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
+
+    userProfileSystem = db.relationship("UserProfileSystem", back_populates="users")
+    person = db.relationship("Person", back_populates="users")
 
     def __init__(self, username, password, is_admin, person_id):
         bcrypt = Bcrypt(current_app)

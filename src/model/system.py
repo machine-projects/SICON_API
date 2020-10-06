@@ -12,6 +12,9 @@ class System(db.Model):
     creation_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
     modification_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
 
+    systemPermission = db.relationship("SystemPermission", back_populates="system")
+    profileSystem = db.relationship("ProfileSystem", back_populates="system")
+
     def __init__(self, data):
         self.name = data.get('name')
         self.description = data.get('description')

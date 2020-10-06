@@ -18,9 +18,8 @@ class Person(db.Model):
     creation_date = db.Column(db.DateTime(), nullable=False, default=datetime.datetime.utcnow())
     modification_date = db.Column(db.DateTime(), nullable=False, default=datetime.datetime.utcnow())
 
-    # address = db.relationship("Address", backref=db.backref("address", lazy="dynamic"))
-    # user = db.relationship("User", backref=db.backref("users", lazy="dynamic"))
-    # contact = db.relationship("Contact", backref=db.backref("contact", lazy="dynamic"))
+    users = db.relationship("User", back_populates="person")
+    address = db.relationship("Address", back_populates="person")
 
     def __init__(self, data_person):
         _type = data_person.get('type')
