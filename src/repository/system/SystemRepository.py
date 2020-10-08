@@ -27,9 +27,10 @@ class SystemRepository:
             page = playload.get('page')
             per_page = playload.get('per_page')
            
-            system = System.query.filter_by(playload).all()
+            system = System.query.filter_by(**playload).all()
             data_paginate = marshal(system, PAGINATE)
-            data = marshal(system.items, system_fields)
+       
+            data = marshal(system, system_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()

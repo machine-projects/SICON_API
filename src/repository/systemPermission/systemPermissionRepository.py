@@ -1,4 +1,5 @@
 from src.model.sytemPermission import SystemPermission
+from src.repository.system.systemRepository import  SystemRepository
 from src import db
 from flask import current_app
 from flask_restful import marshal
@@ -27,7 +28,7 @@ class SystemPermissionRepository:
             page = playload.get('page')
             per_page = playload.get('per_page')
            
-            system_permission = SystemPermission.query.filter_by(playload).all()
+            system_permission = SystemPermission.query.filter_by(**playload).all()
             data_paginate = marshal(system_permission, PAGINATE)
             data = marshal(system_permission.items, system_permission_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
@@ -39,6 +40,11 @@ class SystemPermissionRepository:
             name = playload.get('name')
             system_id = playload.get('system_id')
 
+            system_repository = SystemRepository()
+            system_exist = system_repository.get_search_by_params({'id': system_id})
+            if not system_exist['data']['result']:
+                return ResultModel(f'Não existe sistema com id "{system_id}".', False, True).to_dict()
+
             system_permission_exist = SystemPermission.query.filter_by(name=name, system_id=system_id).first()
             if system_permission_exist:
                 return ResultModel(f'A permissão "{name}" já existe.', False, True).to_dict()
@@ -49,7 +55,7 @@ class SystemPermissionRepository:
             data = marshal(system_permission, system_permission_fields)
             return ResultModel('Permissão criado com sucesso.', data, False).to_dict()
         except Exception as e:
-            return ResultModel('Não foi possivel criar o usuario.', False, True, str(e)).to_dict()
+            return ResultModel('Não foi possivel criar a permissão.', False, True, str(e)).to_dict()
     
 
     def update(self, playload):
@@ -81,4 +87,4 @@ class SystemPermissionRepository:
             data = marshal(system_permission, system_permission_fields)
             return ResultModel('Permissão deletado com sucesso.', data, False).to_dict()
         except Exception as e:
-            return ResultModel('Não foi possivel deletar o sistema.', False, True, str(e)).to_dict()
+            return ResultModel('Não foi possivel deletar a permissão.', False, True, str(e)).to_dict()

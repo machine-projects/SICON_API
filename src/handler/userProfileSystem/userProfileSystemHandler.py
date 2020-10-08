@@ -34,11 +34,11 @@ class UserProfileSystemHandler:
         profile_system_id = playload.get('profile_system_id')
 
         if _id:
-            params_filter['id'] = _id
+            params_filter['id'] = int(_id)
         if user_id:
-            params_filter['user_id'] = user_id
+            params_filter['user_id'] = int(user_id)
         if profile_system_id:
-            params_filter['profile_system_id'] = profile_system_id
+            params_filter['profile_system_id'] = int(profile_system_id)
         
         repository = UserProfileSystemRepository()
         user_profile_system = repository.get_search_by_params(params_filter)

@@ -17,7 +17,7 @@ class CreateSystemPermissionContract(ResultErrorModel):
             self.add_error('name', 'O nome precisa ser uma string.')
         if not system_id:
             self.add_error('system_id', 'O ID do sistema é obrigatorio.')
-        if system_id and type(system_id) != str:
+        if system_id and type(system_id) != int:
             self.add_error('system_id', 'O ID do sistema precisa ser um inteiro.')
         if description and type(description) != str:
             self.add_error('description', 'O descrição precisa ser uma string ou null.')

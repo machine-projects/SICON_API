@@ -13,7 +13,7 @@ class UpdateSystemPermissionContract(ResultErrorModel):
         system_id = data.get('system_id')
         
        
-        if _id:
+        if not _id:
             self.add_error('_id', 'O id é obrigatorio.')
         if _id and type(_id) != int:
             self.add_error('_id', 'O id precisa ser um inteiro.')
@@ -23,7 +23,7 @@ class UpdateSystemPermissionContract(ResultErrorModel):
             self.add_error('name', 'O nome precisa ser uma string.')
         if description and type(description) != str:
             self.add_error('description', 'A descrição precisa ser uma string.')
-        if system_id:
+        if not system_id:
             self.add_error('system_id', 'O ID do sistema é obrigatorio.')
         if system_id and type(system_id) != int:
             self.add_error('system_id', 'O ID do sistema precisa ser um inteiro.')

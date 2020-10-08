@@ -11,11 +11,11 @@ class GetByParamsUserProfileSystemContract(ResultErrorModel):
         user_id = data.get('user_id')
         profile_system_id = data.get('profile_system_id')
 
-        if _id and type(_id) != int:
+        if _id and not _id.isnumeric():
             self.add_error('_id', 'O id precisa ser um inteiro.')
-        if user_id and type(user_id) != int:
+        if user_id and not user_id.isnumeric():
             self.add_error('user_id', 'O ID do usuario precisa ser um inteiro.')
-        if profile_system_id and type(profile_system_id) != int:
+        if profile_system_id and not profile_system_id.isnumeric():
             self.add_error('profile_system_id', 'O ID do perfil do sistema precisa ser um inteiro.')
         if not _id and not user_id and not profile_system_id:
             self.add_error('id, user_id, profile_system_id', 'É obrigatorio o envio de no minimo um parametro.')

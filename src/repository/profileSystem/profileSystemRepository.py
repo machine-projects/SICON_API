@@ -27,7 +27,7 @@ class ProfileSystemRepository:
             page = playload.get('page')
             per_page = playload.get('per_page')
            
-            profile_system = ProfileSystem.query.filter_by(playload).all()
+            profile_system = ProfileSystem.query.filter_by(**playload).all()
             data_paginate = marshal(profile_system, PAGINATE)
             data = marshal(profile_system.items, profile_system_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)

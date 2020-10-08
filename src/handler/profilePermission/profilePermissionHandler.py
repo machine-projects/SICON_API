@@ -32,9 +32,9 @@ class ProfilePermissionHandler:
         system_permision_id = playload.get('system_permision_id')
 
         if profile_system_id:
-            params_filter['profile_system_id'] = profile_system_id
+            params_filter['profile_system_id'] = int(profile_system_id)
         if system_permision_id:
-            params_filter['system_permision_id'] = system_permision_id
+            params_filter['system_permision_id'] = int(system_permision_id)
         
         repository = ProfilePermissionRepository()
         profile_permission = repository.get_search_by_params(params_filter)

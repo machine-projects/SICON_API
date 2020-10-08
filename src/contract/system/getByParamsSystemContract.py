@@ -13,7 +13,7 @@ class GetByParamsSystemContract(ResultErrorModel):
         url = data.get('url')
         
        
-        if _id and type(_id) != int:
+        if _id and not _id.isnumeric():
             self.add_error('_id', 'O id precisa ser um inteiro.')
         if name and type(name) != str:
             self.add_error('name', 'O nome precisa ser uma string.')

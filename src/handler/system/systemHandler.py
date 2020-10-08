@@ -17,7 +17,7 @@ class SystemHandler:
     def get_all(self):
         repository = SystemRepository()
         playload = Paginate().include_paginate_args_playload(request)
-        systems = repository.get_all_systems(playload)
+        systems = repository.get_all(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
         return status_result.default(systems)
@@ -33,7 +33,7 @@ class SystemHandler:
         url = playload.get('url')
 
         if _id:
-            params_filter['id'] = _id
+            params_filter['id'] = int(_id)
         if name:
             params_filter['name'] = name
         if url:

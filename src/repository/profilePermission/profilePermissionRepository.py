@@ -27,7 +27,7 @@ class ProfilePermissionRepository:
             page = playload.get('page')
             per_page = playload.get('per_page')
            
-            profile_permission = ProfilePermission.query.filter_by(playload).all()
+            profile_permission = ProfilePermission.query.filter_by(**playload).all()
             data_paginate = marshal(profile_permission, PAGINATE)
             data = marshal(profile_permission.items, profile_permission_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
