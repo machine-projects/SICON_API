@@ -12,7 +12,7 @@ class ResultModel:
     def to_dict(self, paginate=False):
         if self.error:
             result =  {'message': self.message, 'data':  {'result':self.data}, 'error': self.error, 'exeption': self.exeption}
-        result = {'message': self.message, 'data':  {'result':self.data}, 'error': self.error}
+        else: result = {'message': self.message, 'data':  {'result':self.data}, 'error': self.error}
         if paginate: 
             result['data']['paginate'] = paginate
         return result

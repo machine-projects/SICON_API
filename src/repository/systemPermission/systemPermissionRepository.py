@@ -30,7 +30,7 @@ class SystemPermissionRepository:
            
             system_permission = SystemPermission.query.filter_by(**playload).all()
             data_paginate = marshal(system_permission, PAGINATE)
-            data = marshal(system_permission.items, system_permission_fields)
+            data = marshal(system_permission, system_permission_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()

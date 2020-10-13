@@ -18,7 +18,7 @@ class ProfileSystemHandler:
     def get_all(self):
         repository = ProfileSystemRepository()
         playload = Paginate().include_paginate_args_playload(request)
-        profiles_systems = repository.get_all_profiles_systems(playload)
+        profiles_systems = repository.get_all(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
         return status_result.default(profiles_systems)
@@ -64,9 +64,9 @@ class ProfileSystemHandler:
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = ProfileSystemRepository()
-        person = repository.create(playload)
+        profile_system = repository.create(playload)
         status_result = ValidationsAndSetStatusResultInfraHandler()
-        return status_result.default(person)
+        return status_result.default(profile_system)
         
     
     def delete(self):

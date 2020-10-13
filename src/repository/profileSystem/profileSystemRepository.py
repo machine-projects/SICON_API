@@ -5,6 +5,8 @@ from flask_restful import marshal
 from src.model.schemas import PAGINATE
 from src.model.schemas.profileSystem import profile_system_fields
 from src.infra.model.resultModel import ResultModel
+from src.repository.system.systemRepository import SystemRepository
+
 
 
 class ProfileSystemRepository:
@@ -29,7 +31,7 @@ class ProfileSystemRepository:
            
             profile_system = ProfileSystem.query.filter_by(**playload).all()
             data_paginate = marshal(profile_system, PAGINATE)
-            data = marshal(profile_system.items, profile_system_fields)
+            data = marshal(profile_system, profile_system_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
@@ -38,7 +40,10 @@ class ProfileSystemRepository:
         try:
             system_id = playload.get('system_id')
             name = playload.get('name')
-
+            system_repository = SystemRepository()
+            exist_system_id = system_repository.get_by_id(system_id)
+            if not exist_system_id['data']['result']['id']:
+                return ResultModel(f'O sistema com id {system_id} não existe.', False, True).to_dict()
             profile_system_exist = ProfileSystem.query.filter_by(system_id=system_id, name=name).first()
             if profile_system_exist:
                 return ResultModel(f'Esses dados já foram cadastrados.', False, True).to_dict()

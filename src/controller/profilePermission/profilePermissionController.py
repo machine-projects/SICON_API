@@ -18,7 +18,7 @@ def get_all():
 
 @controller_profile_permission.route('/profilepermission/params', methods=['GET'])
 @jwt_required
-def get_by_params(cpf):
+def get_by_params():
     return  ProfileSystem().get_by_params() 
 
 @controller_profile_permission.route('/profilepermission', methods=['PUT'])

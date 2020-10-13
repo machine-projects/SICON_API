@@ -19,7 +19,7 @@ class CreateProfileSystemContract(ResultErrorModel):
         if description and type(description) != str:
             self.add_error('description', 'A descrição precisa ser uma string.')
        
-        if system_id:
+        if not system_id:
             self.add_error('system_id', 'O ID do sistema é obrigatorio.')
         if system_id and type(system_id) != int:
             self.add_error('system_id', 'O ID do sistema precisa ser um inteiro.')

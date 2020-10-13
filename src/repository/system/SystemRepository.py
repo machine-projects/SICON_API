@@ -35,6 +35,14 @@ class SystemRepository:
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
+    def get_by_id(self, _id, witch_dates=False):
+        try:      
+            system = System.query.get(_id)
+            data = marshal(system, system_fields)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
+        except Exception as e:
+            return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
+
     def create(self, playload):
         try:
             name = playload.get('name')

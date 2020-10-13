@@ -13,9 +13,9 @@ class GetByParamsSystemPermissionContract(ResultErrorModel):
         system_id = data.get('system_id')
         
        
-        if _id and type(_id) != int:
+        if _id and not _id.isnumeric():
             self.add_error('id', 'O ID precisa ser um inteiro.')
-        if system_id and type(system_id) != int:
+        if system_id and not system_id.isnumeric():
             self.add_error('system_id', 'O ID do sistema precisa ser um inteiro.')
         if name and type(name) != str:
             self.add_error('name', 'O nome precisa ser uma string.')

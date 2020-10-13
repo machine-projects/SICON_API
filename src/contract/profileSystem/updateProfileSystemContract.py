@@ -10,7 +10,6 @@ class UpdateProfileSystemContract(ResultErrorModel):
         _id = data.get('id')
         name = data.get('name')
         description = data.get('description')
-        url = data.get('url')
         
         if not _id:
             self.add_error('id', 'O ID é obrigatorio.')
@@ -20,10 +19,6 @@ class UpdateProfileSystemContract(ResultErrorModel):
             self.add_error('name', 'O nome é obrigatorio.')
         if name and type(name) != str:
             self.add_error('name', 'O nome precisa ser uma string.')
-        if not url:
-            self.add_error('url', 'O url é obrigatorio.')
-        if url and type(url) != str:
-            self.add_error('url', 'O url precisa ser uma string.')
         if description and type(description) != str:
             self.add_error('description', 'O descrição precisa ser uma string ou null.')
 

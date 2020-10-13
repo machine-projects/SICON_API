@@ -11,7 +11,7 @@ class GetByParamsProfilePermissionContract(ResultErrorModel):
         profile_system_id = data.get('profile_system_id')
         system_permision_id = data.get('system_permision_id')
 
-        if _id and not  _id.isnumeric():
+        if _id and not _id.isnumeric():
             self.add_error('_id', 'O id precisa ser um inteiro.')
         if profile_system_id and not profile_system_id.isnumeric():
             self.add_error('profile_system_id', 'O ID do perfil do sistema precisa ser um inteiro.')
