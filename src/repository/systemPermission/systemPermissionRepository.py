@@ -34,6 +34,18 @@ class SystemPermissionRepository:
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
+    
+    def search_multiples_ids(self, playload):
+        try:
+            page = playload.get('page')
+            per_page = playload.get('per_page')
+            ids = playload.get('ids')
+            system_permission = SystemPermission.query.filter(SystemPermission.id.in_(ids)).all()
+            data_paginate = marshal(system_permission, PAGINATE)
+            data = marshal(system_permission, system_permission_fields)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
+        except Exception as e:
+            return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
     def create(self, playload):
         try:

@@ -29,13 +29,15 @@ class ProfilePermissionHandler:
             return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
         params_filter = {}
         profile_system_id = playload.get('profile_system_id')
-        system_permision_id = playload.get('system_permision_id')
+        system_permission_id = playload.get('system_permission_id')
+        _id = playload.get('id')
 
+        if _id:
+            params_filter['id'] = int(_id)
         if profile_system_id:
             params_filter['profile_system_id'] = int(profile_system_id)
-        if system_permision_id:
-            params_filter['system_permision_id'] = int(system_permision_id)
-        
+        if system_permission_id:
+            params_filter['system_permission_id'] = int(system_permission_id)
         repository = ProfilePermissionRepository()
         profile_permission = repository.get_search_by_params(params_filter)
         
@@ -60,6 +62,13 @@ class ProfilePermissionHandler:
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = ProfilePermissionRepository()
+        # data = []
+        # for system_permision_id in playload['system_permisions_ids']:
+        #     data.append(dict(
+        #         system_permision_id=system_permision_id,
+        #         profile_system_id=playload.get('profile_system_id')
+        #     ))
+
         profile_permission = repository.create(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
