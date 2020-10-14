@@ -15,8 +15,8 @@ class ProfilePermission(db.Model):
     profileSystem = db.relationship("ProfileSystem", back_populates="profilePermission")
 
     def __init__(self, data):
-        self.system_id = data.get('system_id')
-        self.permission_id = data.get('permission_id')
+        self.system_permission_id = data.get('system_permission_id')
+        self.profile_system_id = data.get('profile_system_id')
 
     def __repr__(self):
         return f'<ProfilePermission: {self.id}'
