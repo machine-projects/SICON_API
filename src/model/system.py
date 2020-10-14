@@ -8,7 +8,7 @@ class System(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(50), index=True, nullable=False, unique=True)
     description = db.Column(db.String(200))
-    url = db.Column(db.String(200), index=True, nullable=False)
+    url = db.Column(db.String(200), index=True)
     creation_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
     modification_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
 
