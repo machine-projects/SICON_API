@@ -29,11 +29,13 @@ class AddressRepository:
 
     def get_by_person_id(self, playload):
         try:
-            person_id = playload.get('id')
+            data_paginate = playload.get('paginate')
+            data_filter = playload.get('data')
+            page = data_paginate.get('page')
+            per_page = data_paginate.get('per_page')
+            
+            person_id = data_filter.get('id')
             schema_address = address_fields
-
-            page = playload.get('page')
-            per_page = playload.get('per_page')
 
             person = Address.query.filter_by(person_id=person_id).paginate(page, per_page)
             data_paginate = marshal(person, PAGINATE)

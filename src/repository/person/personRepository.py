@@ -15,8 +15,9 @@ class PersonRepository:
     @staticmethod
     def get_all_persons(playload):
         try:
-            page = playload.get('page')
-            per_page = playload.get('per_page')
+            data_paginate = playload.get('paginate')
+            page = data_paginate.get('page')
+            per_page = data_paginate.get('per_page')
 
             persons = Person.query.filter().paginate(page, per_page)
             data_pagination = marshal(persons, PAGINATE)

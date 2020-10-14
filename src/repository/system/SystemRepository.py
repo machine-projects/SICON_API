@@ -12,8 +12,9 @@ class SystemRepository:
 
     def get_all(self, playload):
         try:
-            page = playload.get('page')
-            per_page = playload.get('per_page')
+            paginate_filter = playload.get('paginate')
+            page = paginate_filter.get('page')
+            per_page = paginate_filter.get('per_page')
 
             system = System.query.filter().paginate(page, per_page)
             data_paginate = marshal(system, PAGINATE)
@@ -24,10 +25,12 @@ class SystemRepository:
 
     def get_search_by_params(self, playload, witch_dates=False):
         try:
-            page = playload.get('page')
-            per_page = playload.get('per_page')
+            paginate_filter = playload.get('paginate')
+            data_filter = playload.get('data')
+            page = paginate_filter.get('page')
+            per_page = paginate_filter.get('per_page')
            
-            system = System.query.filter_by(**playload).all()
+            system = System.query.filter_by(**data_filter).all()
             data_paginate = marshal(system, PAGINATE)
        
             data = marshal(system, system_fields)

@@ -18,7 +18,7 @@ class UserProfileSystemHandler:
     def get_all(self):
         repository = UserProfileSystemRepository()
         playload = Paginate().include_paginate_args_playload(request)
-        profiles_systems = repository.get_all_profiles_systems(playload)
+        profiles_systems = repository.get_all(playload)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
         return status_result.default(profiles_systems)
@@ -41,7 +41,9 @@ class UserProfileSystemHandler:
             params_filter['profile_system_id'] = int(profile_system_id)
         
         repository = UserProfileSystemRepository()
-        user_profile_system = repository.get_search_by_params(params_filter)
+        _filter = Paginate().include_paginate_args_playload(request)
+        _filter['data'] = params_filter
+        user_profile_system = repository.get_search_by_params(_filter)
         
         status_result = ValidationsAndSetStatusResultInfraHandler()
         return status_result.default(user_profile_system)

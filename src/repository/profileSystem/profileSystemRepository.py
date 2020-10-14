@@ -14,8 +14,9 @@ class ProfileSystemRepository:
 
     def get_all(self, playload):
         try:
-            page = playload.get('page')
-            per_page = playload.get('per_page')
+            paginate_filter = playload.get('paginate')
+            page = paginate_filter.get('page')
+            per_page = paginate_filter.get('per_page')
 
             profile_system = ProfileSystem.query.filter().paginate(page, per_page)
             data_paginate = marshal(profile_system, PAGINATE)
@@ -26,10 +27,21 @@ class ProfileSystemRepository:
 
     def get_search_by_params(self, playload, witch_dates=False):
         try:
-            page = playload.get('page')
-            per_page = playload.get('per_page')
+            paginate_filter = playload.get('paginate')
+            data_filter = playload.get('data')
+            page = paginate_filter.get('page')
+            per_page = paginate_filter.get('per_page')
            
-            profile_system = ProfileSystem.query.filter_by(**playload).all()
+            profile_system = ProfileSystem.query.filter_by(**data_filter).all()
+            data_paginate = marshal(profile_system, PAGINATE)
+            data = marshal(profile_system, profile_system_fields)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
+        except Exception as e:
+            return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
+    
+    def get_by_id(self, _id, witch_dates=False):
+        try:
+            profile_system = ProfileSystem.query.get(_id)
             data_paginate = marshal(profile_system, PAGINATE)
             data = marshal(profile_system, profile_system_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)

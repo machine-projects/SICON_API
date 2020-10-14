@@ -23,8 +23,12 @@ class Paginate:
 
         page = self.__valid_params(page, 1)
         per_page = self.__valid_params(per_page, 10)
-        
-        return dict(page=page, per_page=per_page)
+        result = {
+            'paginate': {
+            'page': page, 
+            'per_page': per_page
+        }}
+        return result
 
     def body_intercept_params(self, request):
         playload = request.json
@@ -33,13 +37,27 @@ class Paginate:
 
         page = self.__valid_params(page, 1)
         per_page = self.__valid_params(per_page, 10)
-        
-        return dict(page=page, per_page=per_page)
+        result = {
+            'paginate': {
+            'page': page, 
+            'per_page': per_page
+        }}
+        return result
     
     def include_paginate_args_playload(self, request, playload={}):
         paginate = self.url_intercept_args(request)
-        return {**playload, **paginate}
+        _filter = self.remove_paginate_items(playload)
+         
+        return {**_filter, **paginate}
     
     def include_paginate_params_playload(self, request, playload):
         paginate = self.body_intercept_params(request)
-        return {**playload, **paginate}
+        _filter = self.remove_paginate_items(playload)
+
+        return {**_filter, **paginate}
+
+    def remove_paginate_items(self, playload):
+        paginate_items = ["page", "pages", "per_page", "prev_num", "total"]
+        for item in paginate_items:
+            if playload.get(item): playload.pop(item)
+        return dict(data=playload)

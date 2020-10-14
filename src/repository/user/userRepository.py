@@ -14,8 +14,9 @@ class UserRepository:
 
     def get_all(self, playload):
         try:
-            page = playload.get('page')
-            per_page = playload.get('per_page')
+            paginate_filter = playload.get('paginate')
+            page = paginate_filter.get('page')
+            per_page = paginate_filter.get('per_page')
 
             users = User.query.filter().paginate(page, per_page)
             data_paginate = marshal(users, PAGINATE)
