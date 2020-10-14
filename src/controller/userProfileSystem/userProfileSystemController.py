@@ -18,7 +18,7 @@ def get_all():
 
 @controller_user_profile_system.route('/userprofilesystem/params', methods=['GET'])
 @jwt_required
-def get_by_params(cpf):
+def get_by_params():
     return  UserProfileSystem().get_by_params() 
 
 @controller_user_profile_system.route('/userprofilesystem', methods=['PUT'])
