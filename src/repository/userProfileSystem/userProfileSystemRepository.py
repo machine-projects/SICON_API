@@ -7,7 +7,7 @@ from src.model.schemas.userProfileSystem import user_profile_system_fields
 from src.infra.model.resultModel import ResultModel
 from src.repository.user.userRepository import  UserRepository
 from src.repository.profileSystem.profileSystemRepository import ProfileSystemRepository
-
+from src.infra.model.resultModel import ResultErrorModel
 
 class UserProfileSystemRepository:
     
@@ -63,38 +63,39 @@ class UserProfileSystemRepository:
         except Exception as e:
             return ResultModel('Não foi possivel criar.', False, True, str(e)).to_dict()
     
-    # def create_multiples(self, playload):
-    #     try:
-    #         profile_system_id = playload.get('profile_system_id')
-    #         system_permisions_ids = playload.get('system_permisions_ids')
-    #         search_system_permision_ids = SystemPermissionRepository().search_multiples_ids({'ids':system_permisions_ids})
-    #         if len(search_system_permision_ids['data']['result']) != len(system_permisions_ids):
-    #             result_error = ResultErrorModel()
-    #             system_permisions_invalid_ids = system_permisions_ids.copy()
-    #             for search_system_permision_id in search_system_permision_ids['data']['result']:
-    #                 if search_system_permision_id.get('id') in system_permisions_invalid_ids:
-    #                     system_permisions_invalid_ids.remove(search_system_permision_id.get('id'))
-    #             for invalid_id in  system_permisions_invalid_ids:
-    #                 result_error.add_error('system_permision_id', f'O ID {invalid_id} não existe')
-    #             return ResultModel(f'Dados invalidos.', False, result_error.errors).to_dict()
+    def create_multiples(self, playload):
+        try:
+            profile_system_id = playload.get('profile_system_id')
+            users_ids = playload.get('users_ids')
 
-    #         profile_system_id = playload.get('profile_system_id')
-    #         data = []
-    #         for system_permission_id in system_permisions_ids:
-                
-    #             new_profile_permission = ProfilePermission(dict(
-    #             profile_system_id= profile_system_id,
-    #             system_permission_id = system_permission_id,
-    #                 )
-    #                 )
-    #             db.session.add(new_profile_permission)
-    #             data.append(new_profile_permission)
-    #         db.session.flush()
-    #         db.session.commit()
-    #         data = marshal(data, profile_permission_fields)
-    #         return ResultModel('Permissão criado com sucesso.', data, False).to_dict()
-    #     except Exception as e:
-    #         return ResultModel('Não foi possivel criar o usuario.', False, True, str(e)).to_dict()
+            exist_profile_system_id = ProfileSystemRepository().get_by_id(profile_system_id)
+            if not exist_profile_system_id['data']['result']['id']:
+                err_exist_ps_id = ResultErrorModel().add_error('profile_system_id', f'O ID {profile_system_id} não existe')
+                return ResultModel(f'ID invalido.', False, err_exist_ps_id.errors).to_dict()
+
+            exist_users = UserRepository().search_multiples_ids({'ids':users_ids})
+            if len(exist_users['data']['result']) != len(users_ids):
+                err_user = ResultErrorModel()
+                users_invalid_ids = users_ids.copy()
+                for user in exist_users['data']['result']:
+                    if user.get('id') in users_invalid_ids:
+                        users_invalid_ids.remove(user.get('id'))
+                for invalid_id in  users_invalid_ids:
+                    err_user.add_error('system_permision_id', f'O ID {invalid_id} não existe')
+                return ResultModel(f'Dados invalidos.', False, err_user.errors).to_dict()
+            data = []
+            for user_id in users_ids:
+                new_user_profile_system = UserProfileSystem(dict(
+                profile_system_id= profile_system_id,
+                user_id = user_id))
+                db.session.add(new_user_profile_system)
+                data.append(new_user_profile_system)
+            db.session.flush()
+            db.session.commit()
+            data = marshal(data, user_profile_system_fields)
+            return ResultModel('Permissão criado com sucesso.', data, False).to_dict()
+        except Exception as e:
+            return ResultModel('Não foi possivel criar o usuario.', False, True, str(e)).to_dict()
     
 
     def update(self, playload):
