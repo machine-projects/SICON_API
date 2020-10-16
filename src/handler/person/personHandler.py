@@ -9,7 +9,7 @@ from src.contract.peson.createPersonContract import CreatePersonContract
 from src.contract.peson.updatePersonContract import UpdatePersonContract
 from src.contract.peson.deletePersonContract import DeletePersonContract
 from src.helper.personHelper import PersonHelper
-from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
+from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 
 
 class PersonHandler:
@@ -22,7 +22,7 @@ class PersonHandler:
         playload = Paginate().include_paginate_args_playload(request)
         persons = repository.get_all_persons(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(persons)
 
     def get_by_cpf(self, cpf):
@@ -32,7 +32,7 @@ class PersonHandler:
         repository = PersonRepository()
         persons = repository.get_by_cpf_or_cnpj('Pessoa Fisica', cpf)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(person)
     
     def get_by_cnpj(self, cnpj):
@@ -42,7 +42,7 @@ class PersonHandler:
         repository = PersonRepository()
         persons = repository.get_by_cnpj_or_cnpj('Pessoa Juridica', cnpj)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(person)
 
     def update_person(self):
@@ -54,7 +54,7 @@ class PersonHandler:
 
         person = repository.update_person(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(person)
 
     def create_person(self):
@@ -73,7 +73,7 @@ class PersonHandler:
         
         person = repository.create_person(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(person)
         
     
@@ -86,5 +86,5 @@ class PersonHandler:
 
         person = repository.delete_person(playload.get('id'))
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(person)

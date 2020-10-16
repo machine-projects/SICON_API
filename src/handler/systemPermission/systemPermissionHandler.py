@@ -6,7 +6,7 @@ from src.contract.systemPermission.getByParamsSystemPermissionContract import Ge
 from src.contract.systemPermission.updateSystemPermissionContract import UpdateSystemPermissionContract
 from src.contract.systemPermission.createSystemPermissionContract import CreateSystemPermissionContract
 from src.contract.systemPermission.deleteSystemPermissionContract import DeleteSystemPermissionContract
-from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
+from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 
 
 class SystemPermission:
@@ -19,7 +19,7 @@ class SystemPermission:
         playload = Paginate().include_paginate_args_playload(request)
         system_permission = repository.get_all(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(system_permission)
 
     def get_by_params(self):
@@ -42,7 +42,7 @@ class SystemPermission:
         repository = SystemPermissionRepository()
         system_permission = repository.get_search_by_params(params_filter)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(system_permission)
     
     def update(self):
@@ -54,7 +54,7 @@ class SystemPermission:
 
         system_permission = repository.update(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(system_permission)
 
     def create(self):
@@ -65,7 +65,7 @@ class SystemPermission:
         repository = SystemPermissionRepository()
         system_permission = repository.create(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(system_permission)
         
     
@@ -78,5 +78,5 @@ class SystemPermission:
 
         system = repository.delete(playload.get('id'))
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(system)

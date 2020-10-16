@@ -1,4 +1,4 @@
-class ValidationsAndSetStatusResultInfraHandler:
+class SetStatusResponseHandler:
 
     def __init__(self):
         pass

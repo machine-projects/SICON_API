@@ -7,7 +7,7 @@ from src.contract.profileSystem.createProfileSystemContract import CreateProfile
 from src.contract.profileSystem.getByParamsProfileSystemContract import GetByParamsProfileSystemContract
 from src.contract.profileSystem.updateProfileSystemContract import UpdateProfileSystemContract
 from src.contract.profileSystem.deleteProfileSystemContract import DeleteProfileSystemContract
-from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
+from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 
 
 class ProfileSystemHandler:
@@ -20,7 +20,7 @@ class ProfileSystemHandler:
         playload = Paginate().include_paginate_args_playload(request)
         profiles_systems = repository.get_all(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profiles_systems)
 
     def get_by_params(self):
@@ -43,7 +43,7 @@ class ProfileSystemHandler:
         repository = ProfileSystemRepository()
         profile_system = repository.get_search_by_params(params_filter)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profile_system)
 
     def update(self):
@@ -55,7 +55,7 @@ class ProfileSystemHandler:
 
         profile_system = repository.update(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profile_system)
 
     def create(self):
@@ -65,7 +65,7 @@ class ProfileSystemHandler:
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = ProfileSystemRepository()
         profile_system = repository.create(playload)
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profile_system)
         
     
@@ -78,5 +78,5 @@ class ProfileSystemHandler:
 
         profile_system = repository.delete(playload.get('id'))
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profile_system)

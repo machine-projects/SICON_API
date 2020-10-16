@@ -6,7 +6,7 @@ from src.contract.profilePermission.getByParamsProfilePermissionContract import 
 from src.contract.profilePermission.createProfilePermissionContract import CreateProfilePermissionContract
 from src.contract.profilePermission.updateProfilePermissionContract import UpdateProfilePermissionContract
 from src.contract.profilePermission.deleteProfilePermissionContract import DeleteProfilePermissionContract
-from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
+from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 
 
 class ProfilePermissionHandler:
@@ -19,7 +19,7 @@ class ProfilePermissionHandler:
         playload = Paginate().include_paginate_args_playload(request)
         profile_permission = repository.get_all(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profile_permission)
 
     def get_by_params(self):
@@ -41,7 +41,7 @@ class ProfilePermissionHandler:
         repository = ProfilePermissionRepository()
         profile_permission = repository.get_search_by_params(params_filter)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profile_permission)
     
     def update(self):
@@ -53,7 +53,7 @@ class ProfilePermissionHandler:
 
         profile_permission = repository.update(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profile_permission)
 
     def create(self):
@@ -71,7 +71,7 @@ class ProfilePermissionHandler:
 
         profile_permission = repository.create(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profile_permission)
         
     
@@ -84,5 +84,5 @@ class ProfilePermissionHandler:
 
         profile_permission = repository.delete(playload.get('id'))
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profile_permission)

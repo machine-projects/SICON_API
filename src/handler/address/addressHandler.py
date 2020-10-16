@@ -7,7 +7,7 @@ from src.contract.address.updateAddressContract import UpdateAdressContract
 from src.contract.address.createAddressContract import CreateAdressContract
 from src.contract.address.deleteAddressContract import DeleteAddressContract
 from src.infra.model.resultModel import ResultModel
-from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
+from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 from src.helper.personHelper import PersonHelper
 from src.infra.handler.pagination import Paginate
 
@@ -20,7 +20,7 @@ class AddressHandler:
         repository = AddressRepository()
         paginate = Paginate().url_intercept_args(request)
         address = repository.get_all_address(paginate)
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(address)
 
     def get_by_id(self, playload):
@@ -32,7 +32,7 @@ class AddressHandler:
         repository = AddressRepository()
         
         person = repository.get_by_id(playload)
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(person)
     
     def get_by_person_id(self, playload):
@@ -45,7 +45,7 @@ class AddressHandler:
         playload = Paginate().include_paginate_args_playload(request, playload)
         address = repository.get_by_person_id(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(address)
 
     def update_address(self):
@@ -56,7 +56,7 @@ class AddressHandler:
         repository = AddressRepository()
         address = repository.update_address(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(address)
 
     def create_address(self):
@@ -67,7 +67,7 @@ class AddressHandler:
         repository = AddressRepository()
         address = repository.create_address(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(address)
     
     def delete_address(self):
@@ -78,5 +78,5 @@ class AddressHandler:
         repository = AddressRepository()
 
         address = repository.delete_address(playload)
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(address)

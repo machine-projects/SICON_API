@@ -7,7 +7,7 @@ from src.repository.address.addressRepository import AddressRepository
 from src.repository.userAndDependencies.UserAndDependenciesRepository import UserAndDependenciesRepository
 from src.infra.model.resultModel import ResultModel
 from src.helper.personHelper import PersonHelper
-from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
+from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 from src.contract.userAndDependencies.createUserAndpersonAndAddressContract import CreateUserAndpersonAndAddressContract
 from src.contract.userAndDependencies.getUserAndpersonAndAddressContract import GetUserAndpersonAndAddressContract
 from flask_restful import Resource, marshal
@@ -30,7 +30,7 @@ class UserAndDependenciesHandler:
         user_repository = UserRepository()
         person_repository = PersonRepository()
         address_repository = AddressRepository()
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         user_exist = user_repository.get_by_username(user_dto.get('username'))
         if user_exist['message'] != 'Nome de usuario não encontrado.':
             if user_exist.get('exeption'):

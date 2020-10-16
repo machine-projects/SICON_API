@@ -10,7 +10,7 @@ from src.contract.user.createUserContract import CreateUserContract
 from src.contract.user.updateUserContract import UpdateUserContract
 from src.contract.user.deleteUserContract import DeleteUserContract
 from src.contract.user.getByIdUserContract import GetByIdUserContract
-from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
+from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 from src.infra.handler.pagination import Paginate
 
 class UserHandler:
@@ -19,7 +19,7 @@ class UserHandler:
         playload = Paginate().include_paginate_args_playload(request)
         users = user.get_all(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(users)
 
     def get_by_username(self, username):
@@ -33,7 +33,7 @@ class UserHandler:
             return ResultModel('Envie todos parametros obrigatorios.', False, contract.errors).to_dict(), 406
         repository = UserRepository()
         user = repository.get_by_id(_id)
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(user)
 
     def create_user(self):
@@ -43,7 +43,7 @@ class UserHandler:
             return ResultModel('Envie todos parametros obrigatorios.', False, contract.errors).to_dict(), 406
         user = UserRepository()
         new_user = user.create(playload)
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.created(new_user)
 
     def update_user(self):
@@ -57,7 +57,7 @@ class UserHandler:
             playload.get('username'),
             playload.get('password'),
             playload.get('is_admin'))
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(user)
 
     def delete_user(self):
@@ -68,5 +68,5 @@ class UserHandler:
 
         repository = UserRepository()
         user = repository.delete(playload.get('id'))
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(user)

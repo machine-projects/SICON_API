@@ -6,7 +6,7 @@ from src.contract.system.createSystemContract import CreateSystemContract
 from src.contract.system.getByParamsSystemContract import GetByParamsSystemContract
 from src.contract.system.updateSystemContract import UpdateSystemContract
 from src.contract.system.deleteSystemContract import DeleteSystemContract
-from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
+from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 
 
 class SystemHandler:
@@ -19,7 +19,7 @@ class SystemHandler:
         playload = Paginate().include_paginate_args_playload(request)
         systems = repository.get_all(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(systems)
 
     def get_by_params(self):
@@ -42,7 +42,7 @@ class SystemHandler:
         repository = SystemRepository()
         systems = repository.get_search_by_params(params_filter)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(systems)
     
     def update(self):
@@ -54,7 +54,7 @@ class SystemHandler:
 
         system = repository.update(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(system)
 
     def create(self):
@@ -65,7 +65,7 @@ class SystemHandler:
         repository = SystemRepository()
         system = repository.create(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(system)
         
     
@@ -78,5 +78,5 @@ class SystemHandler:
 
         system = repository.delete(playload.get('id'))
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(system)
