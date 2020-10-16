@@ -1,13 +1,15 @@
 from flask_restful import Resource, marshal
 from src.repository.userProfileSystem.userProfileSystemRepository import UserProfileSystemRepository
+from src.repository.user.userRepository import UserRepository
 from src import db, request
 from src.infra.model.resultModel import ResultModel
 from src.infra.handler.pagination import Paginate
-from src.contract.userProfileSystem.createUserProfileSystemContract import CreateUserProfileSystemContract
+from src.contract.userProfileSystem.createContract import CreateUserProfileSystemContract
+from src.contract.userProfileSystem.createMultiplesUsersContract import CreateMultiplesUserProfileSystemContract
 from src.contract.userProfileSystem.getByParamsUserProfileSystemContract import GetByParamsUserProfileSystemContract
 from src.contract.userProfileSystem.updateUserProfileSystemContract import UpdateUserProfileSystemContract
 from src.contract.userProfileSystem.deleteUserProfileSystemContract import DeleteUserProfileSystemContract
-from src.infra.handler.validationsAndSetStatusResultInfraHandler import ValidationsAndSetStatusResultInfraHandler
+from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 
 
 class UserProfileSystemHandler:
@@ -20,7 +22,7 @@ class UserProfileSystemHandler:
         playload = Paginate().include_paginate_args_playload(request)
         profiles_systems = repository.get_all(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(profiles_systems)
 
     def get_by_params(self):
@@ -45,7 +47,7 @@ class UserProfileSystemHandler:
         _filter['data'] = params_filter
         user_profile_system = repository.get_search_by_params(_filter)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(user_profile_system)
 
     def update(self):
@@ -57,7 +59,7 @@ class UserProfileSystemHandler:
 
         user_profile_system = repository.update(playload)
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(user_profile_system)
 
     def create(self):
@@ -67,7 +69,18 @@ class UserProfileSystemHandler:
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         repository = UserProfileSystemRepository()
         user_profile_system = repository.create(playload)
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
+        return status_result.default(user_profile_system)
+    
+    def create_witch_multiples_users(self):
+        contract = CreateUserProfileSystemContract()
+        playload = request.json
+        if not(contract.validate(playload)):
+            return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
+        
+        repository = UserProfileSystemRepository()
+        user_profile_system = repository.create(playload)
+        status_result = SetStatusResponseHandler()
         return status_result.default(user_profile_system)
         
     
@@ -80,5 +93,5 @@ class UserProfileSystemHandler:
 
         user_profile_system = repository.delete(playload.get('id'))
         
-        status_result = ValidationsAndSetStatusResultInfraHandler()
+        status_result = SetStatusResponseHandler()
         return status_result.default(user_profile_system)

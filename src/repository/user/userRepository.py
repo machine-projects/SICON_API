@@ -25,7 +25,7 @@ class UserRepository:
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
-    def     get_by_username(self, username, witch_password=False):
+    def get_by_username(self, username, witch_password=False):
         try:
             schemas_user = users_fields
             if witch_password:
@@ -44,6 +44,16 @@ class UserRepository:
             users = User.query.get(_id).first()
             data = marshal(users, users_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
+        except Exception as e:
+            return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
+    
+    def search_multiples_ids(self, playload):
+        try:
+            ids = playload.get('ids')
+            users = User.query.filter(User.id.in_(ids)).all()
+            data_paginate = marshal(users, PAGINATE)
+            data = marshal(users, users_fields)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
