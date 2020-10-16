@@ -12,7 +12,7 @@ class CreateProfileSystemAndDependenciesContract(ResultErrorModel):
         name_profile_system = data.get('name_profile_system')
         description_profile_system = data.get('description_profile_system')
         #  PROFILE PERMISSION
-        system_permissions_id = data.get('system_permissions_id')
+        system_permisions_ids = data.get('system_permisions_ids')
         #  USER PROFILE SYSTEM
         users_ids = data.get('users_ids')
         
@@ -20,7 +20,7 @@ class CreateProfileSystemAndDependenciesContract(ResultErrorModel):
 
         if not system_id:
             self.add_error('system_id', 'O ID do sistema é obrigatorio.')
-        if system_id and type(system_id) != str:
+        if system_id and type(system_id) != int:
             self.add_error('system_id', 'O ID do sistema precisa ser um inteiro.')
         if not name_profile_system:
             self.add_error('name_profile_system', 'O nome do perfil é obrigatorio.')
@@ -30,19 +30,19 @@ class CreateProfileSystemAndDependenciesContract(ResultErrorModel):
             self.add_error('description_profile_system', 'O descrição do perfil precisa ser uma string ou null.')
 
         #  PROFILE PERMISSION
-        if system_permissions_id:
-            self.add_error('system_permissions_id', 'Os IDs de permissões de sistema é obrigatorio.')
-        if system_permissions_id and type(system_permissions_id) != list:
-            self.add_error('system_permissions_id', 'Os IDs de permissões de sistema precisa estar em uma lista.')
+        if not  system_permisions_ids:
+            self.add_error('system_permisions_ids', 'Os IDs de permissões de sistema é obrigatorio.')
+        if system_permisions_ids and type(system_permisions_ids) != list:
+            self.add_error('system_permisions_ids', 'Os IDs de permissões de sistema precisa estar em uma lista.')
         else:
-            for system_permission_id in system_permissions_id:
+            for system_permission_id in system_permisions_ids:
                 if type(system_permission_id) != int:
-                    self.add_error('system_permissions_id', 'Os IDs da permissão precisa ser inteiros.')
+                    self.add_error('system_permisions_ids', 'Os IDs da permissão precisa ser inteiros.')
                     break
         
         
         #  USER PROFILE SYSTEM
-        if users_ids:
+        if not users_ids:
             self.add_error('users_ids', 'Os IDs de usuarios é obrigatorio.')
         if users_ids and type(users_ids) != list:
             self.add_error('users_ids', 'Os IDs de usuarios precisa estar em uma lista.')
