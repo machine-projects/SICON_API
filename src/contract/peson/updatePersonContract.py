@@ -24,9 +24,11 @@ class UpdatePersonContract(ResultErrorModel):
         if _id and type(_id) != int:
             self.add_error('id', 'ID precisa ser um inteiro.')
         if not _type:
-            self.add_error('type', 'Type é obrigatorio.')
+            self.add_error('type', 'O tipo de pessoa é obrigatorio.')
         if _type and type(_type) != str:
-            self.add_error('type', 'Type precisa ser uma string.')
+            self.add_error('type', 'O tipo de pessoa precisa ser uma string.')
+        if _type and not (_type == 'Pessoa Fisica' or _type == 'Pessoa Juridica'):
+            self.add_error('type', 'O tipo de pessoa precisa ser "Pessoa Fisica" ou "Pessoa Juridica".')
         if not (birth_date == None or type(birth_date) == str):
             self.add_error('birth_date', 'Birth date precisa ser uma string ou null.')
         if birth_date and not generic_helper.str_date_check(birth_date):
