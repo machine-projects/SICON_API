@@ -31,21 +31,18 @@ def get_by_id(_id):
     return user.get_by_id(_id)
 
 @controller_user.route('/user', methods=['POST'])
-@jwt.admin_required
 @validity_req.body_is_json
 def post():
     user = UserHandler()
     return user.create_user()
 
 @controller_user.route('/user', methods=['PUT'])
-@jwt.admin_required
 @validity_req.body_is_json
 def put():
     user = UserHandler()
     return user.update_user()
 
 @controller_user.route('/user', methods=['DELETE'])
-@jwt.admin_required
 @validity_req.body_is_json
 def delete():
     user = UserHandler()
