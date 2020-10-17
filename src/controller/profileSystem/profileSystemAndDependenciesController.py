@@ -11,9 +11,9 @@ jwt = AuthDecorator()
 validity_req = ErrorsRequestDecorator()
 
 
-@controller_profile_system_and_dependencies.route('/profilesystemanddependencies/id/<_id>', methods=['GET'])
+@controller_profile_system_and_dependencies.route('/profilesystemanddependencies/<_id>', methods=['GET'])
 @jwt_required
-def get_by_id(_id):
+def get_by_params(_id):
     return  ProfileSystemAndDependencies().get_by_id(_id) 
 
 @controller_profile_system_and_dependencies.route('/profilesystemanddependencies', methods=['POST'])

@@ -10,7 +10,7 @@ class GetByIdProfileSystemAndDependenciesContract(ResultErrorModel):
 
         if not _id:
             self.add_error('id', 'O ID do perfil é obrigatorio.')
-        if _id and type(_id) != int:
+        if _id and not _id.isnumeric():
             self.add_error('id', 'O ID do perfil precisa ser um inteiro.')
      
         return self.valid()

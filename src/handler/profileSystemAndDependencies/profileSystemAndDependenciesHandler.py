@@ -8,6 +8,7 @@ from src.infra.handler.pagination import Paginate
 from src.contract.profileSystemAndDependencies.getByIdProfileSystemAndDependenciesContract import GetByIdProfileSystemAndDependenciesContract
 from src.contract.profileSystemAndDependencies.createProfileSystemAndDependenciesContract import CreateProfileSystemAndDependenciesContract
 from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
+from src.infra.handler.pagination import Paginate
 
 class ProfileSystemAndDependenciesHandler:
 
@@ -71,19 +72,20 @@ class ProfileSystemAndDependenciesHandler:
 
     def get_by_id(self, _id):
         contract = GetByIdProfileSystemAndDependenciesContract()
-        playload = request.json
         if not(contract.validate(_id)):
             return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
+        _id =  int(_id)
         repo_prof_sys = ProfileSystemRepository()
-        profile_system_db_result = repo_prof_sys.get_search_by_params({'id':_id})
-        if not profile_system_db_result['data']['result']:
+        profile_system_db_result = repo_prof_sys.get_by_id(_id)
+        if not profile_system_db_result['data']['result']['id']:
             return ResultModel('ID não encontrado.', False, contract.errors).to_dict(), 406
         profile_system = profile_system_db_result['data']['result']
-        
         repo_prof_permi = ProfilePermissionRepository()
-        profile_permission = repo_prof_permi.get_search_by_params({'profile_system_id':_id})['data']['result']
+        _filter = dict(profile_system_id=_id)
+        filter_dto = Paginate().include_paginate_args_playload(request, _filter)
+        profile_permission = repo_prof_permi.get_search_by_params(filter_dto)['data']['result']
         repo_user_prof_system = UserProfileSystemRepository()
-        user_profile_system = repo_user_prof_system.get_search_by_params({'profile_system_id':_id})['data']['result']
+        user_profile_system = repo_user_prof_system.get_search_by_params(filter_dto)['data']['result']
 
         data = dict(
             profile_system=profile_system,
