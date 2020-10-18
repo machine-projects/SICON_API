@@ -70,7 +70,5 @@ class PersonHelper:
 
     @staticmethod
     def remove_characters(data):
-        data = data.replace( "-", "" )
-        data = data.replace( ".", "" )
-        data = data.replace( "/", "" )
+        data = data.replace( "-", "" ).replace( ".", "" ).replace( "/", "" )
         return data
