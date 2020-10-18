@@ -22,14 +22,14 @@ class UserAndDependenciesRepository:
         try:
             if user_id:
                 user_id = int(user_id)
-                user_result, person_result = db.session.query(User, Person).filter(Person.id == User.person_id).filter(User.person_id == person_id).first()
+                user_result, person_result = db.session.query(User, Person).filter(Person.id == User.person_id).filter(User.id == user_id).first()
                 
                 if not user_result:
                     return  ResultModel('Sem resultados na pesquisa.', False, True).to_dict()
                 user_data = marshal(user_result, users_fields)
                 person_data = marshal(person_result, person_fields)
 
-                query_address = Address.query.filter_by(person_id=user_id).all()
+                query_address = Address.query.filter_by(person_id=person_data['id']).all()
                 address_data = marshal(query_address, address_fields)
                 return self.__formart_result(user_data, person_data, address_data)
 

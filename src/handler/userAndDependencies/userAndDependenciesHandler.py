@@ -75,6 +75,7 @@ class UserAndDependenciesHandler:
         playload = request.args
         if not(contract.validate(playload)):
             return ResultModel('Envie ao menos um parametro.', False, contract.errors).to_dict(), 406
+        
         repository = UserAndDependenciesRepository()
         return repository.get(playload)
         
