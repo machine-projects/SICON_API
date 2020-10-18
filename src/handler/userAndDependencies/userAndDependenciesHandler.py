@@ -13,19 +13,21 @@ from src.contract.userAndDependencies.getUserAndpersonAndAddressContract import 
 from flask_restful import Resource, marshal
 from flask_bcrypt import Bcrypt
 from flask import current_app
+from src.helper.genericHelper import GenericHelper as Helper
 
 
 
 class UserAndDependenciesHandler:
  
     def create_user_person_address(self):
+        helper = Helper()
         contract = CreateUserAndpersonAndAddressContract()
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Envie todos parametros obrigatorios.', False, contract.errors).to_dict(), 406
         user_dto = playload.get('user')
-        person_dto = playload.get('person')
-        address_dto = playload.get('address')
+        person_dto = helper.captalize_full_dict(playload.get('person'))
+        address_dto = helper.captalize_full_dict(playload.get('address'))
         
         user_repository = UserRepository()
         person_repository = PersonRepository()
@@ -41,16 +43,23 @@ class UserAndDependenciesHandler:
             return user_exist, 406
         cpf = person_dto.get('cpf')
         cnpj = person_dto.get('cnpj')
+
         person_helper = PersonHelper()
         if cpf:
             person_dto['cpf'] = person_helper.remove_characters(cpf)
+            exist_cpf = person_repository.get_by_cpf_or_cnpj(person_dto['type'], person_dto['cpf'])['data']['result']
+            if exist_cpf: return ResultModel(f'O CPF "{cpf}" já foi cadastrado.', False, True).to_dict(), 406
         elif cnpj:
             person_dto['cnpj'] = person_helper.remove_characters(cnpj)
+            exist_cnpj = person_repository.get_by_cpf_or_cnpj(person_dto['type'], person_dto['cnpj'])['data']['result']
+            if exist_cnpj: return ResultModel(f'O CNPJ "{cnpj}" já foi cadastrado.', False, True).to_dict(), 406
         person = person_repository.create_person(person_dto)
         if not person['data']['result']:
             return status_result.default(person)
         person = person['data']['result']
         address_dto['person_id'] = person.get('id')
+
+
         address = address_repository.create_address(address_dto)
         if not address['data']['result']:
             return status_result.default(address)

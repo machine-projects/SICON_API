@@ -9,6 +9,7 @@ from src.contract.address.deleteAddressContract import DeleteAddressContract
 from src.infra.model.resultModel import ResultModel
 from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 from src.helper.personHelper import PersonHelper
+from src.helper.genericHelper import GenericHelper as Helper
 from src.infra.handler.pagination import Paginate
 
 class AddressHandler:
@@ -53,6 +54,7 @@ class AddressHandler:
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
+        playload = Helper().captalize_full_dict(playload)
         repository = AddressRepository()
         address = repository.update_address(playload)
         
@@ -64,6 +66,7 @@ class AddressHandler:
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
+        playload = Helper().captalize_full_dict(playload)
         repository = AddressRepository()
         address = repository.create_address(playload)
         

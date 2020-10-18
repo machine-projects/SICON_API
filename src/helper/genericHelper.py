@@ -16,3 +16,16 @@ class GenericHelper:
         if not date: return date
         iso_date = datetime.datetime.strptime(date, '%Y-%m-%d')
         return format(iso_date, "%d/%m/%Y")
+
+    def captalize_full_str(self, string):
+        if not string or type(string) != str:
+            return string
+        return string.title()
+    
+    def captalize_full_dict(self, dictionary):
+        if type(dictionary) != dict:
+            return dictionary
+        for key in dictionary.keys():
+            dictionary[key] = captalize_full_str(dictionary[key])
+        return dictionary
+            

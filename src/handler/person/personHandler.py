@@ -9,6 +9,7 @@ from src.contract.peson.createPersonContract import CreatePersonContract
 from src.contract.peson.updatePersonContract import UpdatePersonContract
 from src.contract.peson.deletePersonContract import DeletePersonContract
 from src.helper.personHelper import PersonHelper
+from src.helper.genericHelper import GenericHelper as Helper
 from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 
 
@@ -30,7 +31,7 @@ class PersonHandler:
         if not(contract.validate(cpf)):
             return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
         repository = PersonRepository()
-        persons = repository.get_by_cpf_or_cnpj('Pessoa Fisica', cpf)
+        person = repository.get_by_cpf_or_cnpj('Pessoa Fisica', cpf)
         
         status_result = SetStatusResponseHandler()
         return status_result.default(person)
@@ -40,7 +41,7 @@ class PersonHandler:
         if not(contract.validate(cnpj)):
             return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
         repository = PersonRepository()
-        persons = repository.get_by_cnpj_or_cnpj('Pessoa Juridica', cnpj)
+        person = repository.get_by_cnpj_or_cnpj('Pessoa Juridica', cnpj)
         
         status_result = SetStatusResponseHandler()
         return status_result.default(person)
@@ -50,6 +51,7 @@ class PersonHandler:
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
+        playload = Helper().captalize_full_dict(playload)
         repository = PersonRepository()
 
         person = repository.update_person(playload)
@@ -62,6 +64,7 @@ class PersonHandler:
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
+        playload = Helper().captalize_full_dict(playload)
         repository = PersonRepository()
         cpf = playload.get('cpf')
         cnpj = playload.get('cnpj')
