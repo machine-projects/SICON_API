@@ -17,10 +17,11 @@ class AddressRepository:
     @staticmethod
     def get_all_address(playload):
         try:
+            data_paginate = playload.get('paginate')
             page = playload.get('page')
             per_page = playload.get('per_page')
 
-            address = Address.query.filter().paginate(page, per_page)
+            address = Address.query.filter().paginate(**data_paginate)
             data_paginate = marshal(address, PAGINATE )
             data = marshal(address.items, address_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
@@ -37,7 +38,7 @@ class AddressRepository:
             person_id = data_filter.get('id')
             schema_address = address_fields
 
-            person = Address.query.filter_by(person_id=person_id).paginate(page, per_page)
+            person = Address.query.filter_by(person_id=person_id).paginate(**data_paginate)
             data_paginate = marshal(person, PAGINATE)
             data = marshal(person.items, schema_address)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)

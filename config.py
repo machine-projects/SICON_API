@@ -7,9 +7,13 @@ class Config:
 
 class Dev(Config):
     Debug=True
+    TOKEN_DAYS_EXPIRES=10
+
+
     
 class Prod(Config):
     Debug=False
+    TOKEN_DAYS_EXPIRES=10
 
 class Test(Config):
     Debug=True

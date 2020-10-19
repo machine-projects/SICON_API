@@ -16,10 +16,7 @@ class PersonRepository:
     def get_all_persons(playload):
         try:
             data_paginate = playload.get('paginate')
-            page = data_paginate.get('page')
-            per_page = data_paginate.get('per_page')
-
-            persons = Person.query.filter().paginate(page, per_page)
+            persons = Person.query.filter().paginate(**data_paginate)
             data_pagination = marshal(persons, PAGINATE)
             data = marshal(persons.items, person_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_pagination)

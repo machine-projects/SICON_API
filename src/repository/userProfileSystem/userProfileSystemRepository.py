@@ -15,10 +15,7 @@ class UserProfileSystemRepository:
     def get_all(self, playload):
         try:
             paginate_filter = playload.get('paginate')
-            page = paginate_filter.get('page')
-            per_page = paginate_filter.get('per_page')
-
-            user_profile_system = UserProfileSystem.query.filter().paginate(page, per_page)
+            user_profile_system = UserProfileSystem.query.filter().paginate(**paginate_filter)
             data_paginate = marshal(user_profile_system, PAGINATE)
             data = marshal(user_profile_system.items, user_profile_system_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
@@ -28,14 +25,10 @@ class UserProfileSystemRepository:
     def get_search_by_params(self, playload, witch_dates=False):
         try:
             paginate_filter = playload.get('paginate')
-            data_filter = playload.get('data')
-            page = paginate_filter.get('page')
-            per_page = paginate_filter.get('per_page')
-           
+            data_filter = playload.get('data')    
             user_profile_system = UserProfileSystem.query.filter_by(**data_filter).all()
-            data_paginate = marshal(user_profile_system, PAGINATE)
             data = marshal(user_profile_system, user_profile_system_fields)
-            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 

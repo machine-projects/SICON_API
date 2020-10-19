@@ -14,10 +14,7 @@ class SystemPermissionRepository:
     def get_all(self, playload):
         try:
             paginate_filter = playload.get('paginate')
-            page = paginate_filter.get('page')
-            per_page = paginate_filter.get('per_page')
-
-            system_permission = SystemPermission.query.filter().paginate(page, per_page)
+            system_permission = SystemPermission.query.filter().paginate(**paginate_filter)
             data_paginate = marshal(system_permission, PAGINATE)
             data = marshal(system_permission.items, system_permission_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
