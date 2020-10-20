@@ -14,7 +14,7 @@ class GetByParamsUserProfileSystemContract(ResultErrorModel):
 
         if _id and not _id.isnumeric():
             self.add_error('_id', 'O ID precisa ser um inteiro.')
-        if system_id and not _id.isnumeric():
+        if system_id and not system_id.isnumeric():
             self.add_error('system_id', 'O ID do sistema precisa ser um inteiro.')
         if user_id and not user_id.isnumeric():
             self.add_error('user_id', 'O ID do usuario precisa ser um inteiro.')

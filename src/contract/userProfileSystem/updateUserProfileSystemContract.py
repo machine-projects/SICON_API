@@ -10,6 +10,7 @@ class UpdateUserProfileSystemContract(ResultErrorModel):
         _id = data.get('id')
         user_id = data.get('user_id')
         profile_system_id = data.get('profile_system_id')
+        system_id = data.get('system_id')
         
         if not _id:
             self.add_error('id', 'O ID é obrigatorio.')
@@ -23,5 +24,9 @@ class UpdateUserProfileSystemContract(ResultErrorModel):
             self.add_error('profile_system_id', 'O ID do perfil do sistema é obrigatorio.')
         if profile_system_id and type(profile_system_id) != int:
             self.add_error('profile_system_id', 'O ID do perfil do sistema precisa ser um inteiro.')
+        if not system_id:
+            self.add_error('system_id', 'O ID do sistema é obrigatorio.')
+        if system_id and type(system_id) != int:
+            self.add_error('system_id', 'O ID do sistema precisa ser um inteiro.')
 
         return self.valid()

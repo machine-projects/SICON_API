@@ -24,7 +24,7 @@ class UserProfileSystemRepository:
 
     def get_search_by_params(self, playload, witch_dates=False):
         try:
-            paginate_filter = playload.get('paginate')
+            paginate_filter = playload.get('paginate') or None
             data_filter = playload.get('data')    
             user_profile_system = UserProfileSystem.query.filter_by(**data_filter).all()
             data = marshal(user_profile_system, user_profile_system_fields)
@@ -77,6 +77,16 @@ class UserProfileSystemRepository:
                 for invalid_id in  users_invalid_ids:
                     err_user.add_error('system_permision_id', f'O ID {invalid_id} não existe')
                 return ResultModel(f'Dados invalidos.', False, err_user.errors).to_dict()
+            users_is_registered = UserProfileSystem.query\
+                .filter(UserProfileSystem.user_id.in_(users_ids))\
+                .filter_by( system_id=system_id, profile_system_id=profile_system_id)
+            if users_is_registered.count():
+                users_registered = users_is_registered.all()
+                for user_registered in users_registered:
+                    if users_ids.__contains__(user_registered.user_id): users_ids.remove(user_registered.user_id)
+            if not users_ids: 
+                return ResultModel(f'Usuarios já foram cadastrados anteriormente.', False, True).to_dict()
+
             data = []
             for user_id in users_ids:
                 new_user_profile_system = UserProfileSystem(dict(
@@ -89,9 +99,9 @@ class UserProfileSystemRepository:
             db.session.flush()
             db.session.commit()
             data = marshal(data, user_profile_system_fields)
-            return ResultModel('Permissão criado com sucesso.', data, False).to_dict()
+            return ResultModel('Sucesso ao inserir usuarios no perfil.', data, False).to_dict()
         except Exception as e:
-            return ResultModel('Não foi possivel criar o usuario.', False, True, str(e)).to_dict()
+            return ResultModel('Não foi possivel inserir usuarios no perfil.', False, True, str(e)).to_dict()
     
 
     def update(self, playload):
