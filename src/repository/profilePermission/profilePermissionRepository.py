@@ -24,14 +24,10 @@ class ProfilePermissionRepository:
     def get_search_by_params(self, playload, witch_dates=False):
         try:
             paginate_filter = playload.get('paginate')
-            data_filter = playload.get('data')
-
-            page = paginate_filter.get('page')
-            per_page = paginate_filter.get('per_page')
-           
-            profile_permission = ProfilePermission.query.filter_by(**data_filter).all()
+            data_filter = playload.get('data')           
+            profile_permission = ProfilePermission.query.filter_by(**data_filter).paginate(**paginate_filter)
             data_paginate = marshal(profile_permission, PAGINATE)
-            data = marshal(profile_permission, profile_permission_fields)
+            data = marshal(profile_permission.items, profile_permission_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()

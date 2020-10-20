@@ -7,6 +7,7 @@ from src.contract.profilePermission.createProfilePermissionContract import Creat
 from src.contract.profilePermission.updateProfilePermissionContract import UpdateProfilePermissionContract
 from src.contract.profilePermission.deleteProfilePermissionContract import DeleteProfilePermissionContract
 from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
+from src.infra.handler.pagination import Paginate
 
 
 class ProfilePermissionHandler:
@@ -38,7 +39,9 @@ class ProfilePermissionHandler:
             params_filter['profile_system_id'] = int(profile_system_id)
         if system_permission_id:
             params_filter['system_permission_id'] = int(system_permission_id)
+        params_filter= Paginate().include_paginate_args_playload(request, playload)
         repository = ProfilePermissionRepository()
+        
         profile_permission = repository.get_search_by_params(params_filter)
         
         status_result = SetStatusResponseHandler()

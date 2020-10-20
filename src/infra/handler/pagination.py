@@ -1,4 +1,6 @@
 
+from flask import request
+
 
 class Paginate:
 
@@ -6,10 +8,10 @@ class Paginate:
         pass
     
     def __valid_params(self, data, default_value):
-        if not data: data = default_value
+        if not data: return default_value
         if type(data) == str:
             if data.isnumeric():
-                data = int(data)
+                return int(data)
             else:
                 data = default_value
         elif type(data) != int and type(data) != str:
@@ -57,6 +59,7 @@ class Paginate:
         return {**_filter, **paginate}
 
     def remove_paginate_items(self, playload):
+        playload = dict(playload)
         paginate_items = ["page", "pages", "per_page", "prev_num", "total"]
         for item in paginate_items:
             if playload.get(item): playload.pop(item)

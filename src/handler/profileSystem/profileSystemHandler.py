@@ -9,7 +9,6 @@ from src.contract.profileSystem.updateProfileSystemContract import UpdateProfile
 from src.contract.profileSystem.deleteProfileSystemContract import DeleteProfileSystemContract
 from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 
-
 class ProfileSystemHandler:
 
     def __init__(self):
@@ -39,6 +38,7 @@ class ProfileSystemHandler:
             params_filter['name'] = name
         if system_id:
             params_filter['system_id'] = int(system_id)
+        params_filter = Paginate().include_paginate_args_playload(request,params_filter)
         
         repository = ProfileSystemRepository()
         profile_system = repository.get_search_by_params(params_filter)

@@ -26,12 +26,9 @@ class ProfileSystemRepository:
         try:
             paginate_filter = playload.get('paginate')
             data_filter = playload.get('data')
-            page = paginate_filter.get('page')
-            per_page = paginate_filter.get('per_page')
-           
-            profile_system = ProfileSystem.query.filter_by(**data_filter).all()
+            profile_system = ProfileSystem.query.filter_by(**data_filter).paginate(**paginate_filter)
             data_paginate = marshal(profile_system, PAGINATE)
-            data = marshal(profile_system, profile_system_fields)
+            data = marshal(profile_system.items, profile_system_fields)
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
