@@ -31,7 +31,7 @@ def update():
 @jwt_required
 @validity_req.body_is_json
 def create():
-    return  UserProfileSystem().create()
+    return  UserProfileSystem().create_witch_multiples_users()
 
 @controller_user_profile_system.route('/userprofilesystem', methods=['DELETE'])
 @jwt_required
