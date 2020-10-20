@@ -9,11 +9,16 @@ class CreateMultiplesUserProfileSystemContract(ResultErrorModel):
     def validate(self, data):
         users_ids = data.get('users_ids')
         profile_system_id = data.get('profile_system_id')
+        system_id = data.get('system_id')
         
         if not users_ids:
             self.add_error('users_ids', 'Os IDs dos usuarios é obrigatorio.')
         if users_ids and type(users_ids) != list:
             self.add_error('users_ids', 'Os IDs dos usuarios precisam ser uma lista.')
+        if not system_id:
+            self.add_error('system_id', 'O ID do sistema é obrigatorio.')
+        if system_id and type(system_id) != int:
+            self.add_error('system_id', 'O ID do sistema precisa ser um inteiro.')
         if not profile_system_id:
             self.add_error('profile_system_id', 'O ID do perfil do sistema é obrigatorio.')
         if profile_system_id and type(profile_system_id) != int:

@@ -34,6 +34,7 @@ class UserProfileSystemHandler:
         _id = playload.get('id')
         user_id = playload.get('user_id')
         profile_system_id = playload.get('profile_system_id')
+        system_id = playload.get('system_id')
 
         if _id:
             params_filter['id'] = int(_id)
@@ -41,6 +42,8 @@ class UserProfileSystemHandler:
             params_filter['user_id'] = int(user_id)
         if profile_system_id:
             params_filter['profile_system_id'] = int(profile_system_id)
+        if system_id:
+            params_filter['system_id'] = int(system_id)
         
         repository = UserProfileSystemRepository()
         _filter = Paginate().include_paginate_args_playload(request)

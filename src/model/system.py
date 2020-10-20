@@ -14,6 +14,7 @@ class System(db.Model):
 
     systemPermission = db.relationship("SystemPermission", back_populates="system")
     profileSystem = db.relationship("ProfileSystem", back_populates="system")
+    userProfileSystem = db.relationship("UserProfileSystem", back_populates="system")
 
     def __init__(self, data):
         self.name = data.get('name')
