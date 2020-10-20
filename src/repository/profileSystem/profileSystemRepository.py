@@ -36,9 +36,8 @@ class ProfileSystemRepository:
     def get_by_id(self, _id, witch_dates=False):
         try:
             profile_system = ProfileSystem.query.get(_id)
-            data_paginate = marshal(profile_system, PAGINATE)
             data = marshal(profile_system, profile_system_fields)
-            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(profile_system)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
