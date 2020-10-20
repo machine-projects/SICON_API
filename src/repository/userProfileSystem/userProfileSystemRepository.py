@@ -60,6 +60,7 @@ class UserProfileSystemRepository:
         try:
             profile_system_id = playload.get('profile_system_id')
             users_ids = playload.get('users_ids')
+            system_id = playload.get('system_id')
 
             exist_profile_system_id = ProfileSystemRepository().get_by_id(profile_system_id)
             if not exist_profile_system_id['data']['result']['id']:
@@ -80,7 +81,9 @@ class UserProfileSystemRepository:
             for user_id in users_ids:
                 new_user_profile_system = UserProfileSystem(dict(
                 profile_system_id= profile_system_id,
-                user_id = user_id))
+                user_id = user_id,
+                system_id=system_id
+                ))
                 db.session.add(new_user_profile_system)
                 data.append(new_user_profile_system)
             db.session.flush()

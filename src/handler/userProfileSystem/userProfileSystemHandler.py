@@ -76,13 +76,13 @@ class UserProfileSystemHandler:
         return status_result.default(user_profile_system)
     
     def create_witch_multiples_users(self):
-        contract = CreateUserProfileSystemContract()
+        contract = CreateMultiplesUserProfileSystemContract()
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
         
         repository = UserProfileSystemRepository()
-        user_profile_system = repository.create(playload)
+        user_profile_system = repository.create_multiples(playload)
         status_result = SetStatusResponseHandler()
         return status_result.default(user_profile_system)
         
