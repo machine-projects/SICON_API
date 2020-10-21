@@ -8,6 +8,7 @@ import datetime
 from src.infra.model.resultModel import ResultModel
 from src.repository.user.userRepository import UserRepository
 from src.contract.auth.loginCotract import LoginContract
+from src.infra.handler.pagination import Paginate
 
 
 class AuthHandler:
@@ -26,13 +27,10 @@ class AuthHandler:
             ResultModel('Usuario não existe.', False, True)
         if not user or not bcrypt.check_password_hash(user['password'], password):
             return ResultModel('Credenciais incorretas.', False, True).to_dict(), 406
-        
         data = {
-            'id': user['id'],
-            'username': user['username'],
+            'userId': user['id'],
             'is_admin': user['is_admin']
         }
-        
-        expires = datetime.timedelta(days=30)
-        token = create_access_token(identity=user['username'], expires_delta=expires, user_claims=data)
+        expires = datetime.timedelta(days=current_app.config.get('TOKEN_DAYS_EXPIRES'))
+        token = create_access_token(identity=user['id'], expires_delta=expires, user_claims=data)
         return ResultModel('Sucesso na geração do token.', token, False).to_dict(), 201

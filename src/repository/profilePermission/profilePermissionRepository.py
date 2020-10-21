@@ -31,6 +31,15 @@ class ProfilePermissionRepository:
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
+   
+    def get_multiples_profile_system_id(self, playload, witch_dates=False):
+        try:
+            profile_system_ids = playload.get('profile_system_ids')
+            profile_permission = ProfilePermission.query.filter(ProfilePermission.profile_system_id.in_(profile_system_ids)).all()
+            data = marshal(profile_permission, profile_permission_fields)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
+        except Exception as e:
+            return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
 
     def create(self, playload):
         try:
