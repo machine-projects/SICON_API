@@ -9,6 +9,7 @@ class UpdateUserContract(ResultErrorModel):
         _id = data.get('id')
         username = data.get('username')
         password = data.get('password')
+        is_admin = data.get('is_admin')
         
         if not _id:
             self.add_error('id', 'id é obrigatorio.')
@@ -18,8 +19,8 @@ class UpdateUserContract(ResultErrorModel):
             self.add_error('username', 'username é obrigatorio.')
         if username and type(username) != type(''):
             self.add_error('username', 'username precisa ser uma string.')
-        if type(data.get('is_admin')) != type(True):
-            self.add_error('is_admin', 'is_admin é obrigatorio.')
+        if is_admin and type(is_admin) != type(True):
+            self.add_error('is_admin', 'is_admin precisa ser booleano.')
         if not password:
             self.add_error('password', 'password é obrigatorio.')
         if password and type(password) != type(''):

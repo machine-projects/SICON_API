@@ -18,7 +18,7 @@ class User(db.Model):
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
     username = db.Column(db.String(40), nullable=False, unique=True, index=True)
     password = db.Column(db.String(128), nullable=False)
-    is_admin = db.Column(db.Boolean(), nullable=False)
+    is_admin = db.Column(db.Boolean())
     creation_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
     modification_date = db.Column(db.DateTime(), nullable=False,  default=datetime.datetime.utcnow())
 

@@ -12,6 +12,8 @@ from src.contract.user.deleteUserContract import DeleteUserContract
 from src.contract.user.getByIdUserContract import GetByIdUserContract
 from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
 from src.infra.handler.pagination import Paginate
+from src.handler.auth.admin import Admin
+
 
 class UserHandler:
     def get_all_users(self):
@@ -41,6 +43,8 @@ class UserHandler:
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Envie todos parametros obrigatorios.', False, contract.errors).to_dict(), 406
+        if playload.get('is_admin') and not Admin().is_admin():
+            return ResultModel('Só um administrador pode criar outro administrador.', False, contract.errors).to_dict(), 406
         user = UserRepository()
         new_user = user.create(playload)
         status_result = SetStatusResponseHandler()
@@ -51,6 +55,8 @@ class UserHandler:
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Envie todos parametros obrigatorios.', False, contract.errors).to_dict(), 406
+        if playload.get('is_admin') and not Admin().is_admin():
+            return ResultModel('Só um administrador pode editar outro administrador.', False, contract.errors).to_dict(), 406
         repository = UserRepository()
         user = repository.update(
             playload.get('id'),

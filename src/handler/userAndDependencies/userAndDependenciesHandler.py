@@ -14,6 +14,7 @@ from flask_restful import Resource, marshal
 from flask_bcrypt import Bcrypt
 from flask import current_app
 from src.helper.genericHelper import GenericHelper as Helper
+from src.handler.auth.admin import Admin
 
 
 
@@ -41,6 +42,8 @@ class UserAndDependenciesHandler:
                 username = user_dto.get('username')
                 return ResultModel(f'Usuario "{username}" já existe.', False, True).to_dict(), 406
             return user_exist, 406
+        if user_dto.get('is_admin') and not Admin().is_admin():
+            return ResultModel('Só um administrador pode criar outro administrador.', False, contract.errors).to_dict(), 406            
         cpf = person_dto.get('cpf')
         cnpj = person_dto.get('cnpj')
 

@@ -26,6 +26,6 @@ class GenericHelper:
         if type(dictionary) != dict:
             return dictionary
         for key in dictionary.keys():
-            dictionary[key] = captalize_full_str(dictionary[key])
+            dictionary[key] = self.captalize_full_str(dictionary[key])
         return dictionary
             
