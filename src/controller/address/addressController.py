@@ -29,8 +29,8 @@ def get_by_person_id(_id):
     return  AddressHandler().get_by_person_id(playload) 
 
 @controller_address.route('/address', methods=['PUT'])
-@validity_req.body_is_json
 @jwt.required_permission(PermissionEnum.EDIT.value)
+@validity_req.body_is_json
 def update():
     return  AddressHandler().update_address()
 

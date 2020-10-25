@@ -22,8 +22,8 @@ def get_by_params():
     return  System().get_by_params() 
 
 @controller_system.route('/system', methods=['PUT'])
-@validity_req.body_is_json
 @jwt.required_permission(PermissionEnum.EDIT.value)
+@validity_req.body_is_json
 def update():
     return  System().update()
 

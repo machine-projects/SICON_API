@@ -27,8 +27,8 @@ def get_by_cnpj(cnpj):
     return  PersonHandler().get_by_cnpj(cnpj) 
 
 @controller_person.route('/person', methods=['PUT'])
-@validity_req.body_is_json
 @jwt.required_permission(PermissionEnum.EDIT.value)
+@validity_req.body_is_json
 def update():
     return  PersonHandler().update_person()
 
