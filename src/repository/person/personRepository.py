@@ -22,18 +22,15 @@ class PersonRepository:
             return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_pagination)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
-
-    def get_by_cpf_or_cnpj(self, _type, cpf_or_cnpj):
+   
+    def get_search_by_params(self, playload, witch_dates=False):
         try:
-            schema_person = person_fields
-            if _type == 'Pessoa Fisica':
-                person = Person.query.filter_by(cpf=cpf_or_cnpj).first()
-            elif _type == 'Pessoa Juridica':
-                person = Person.query.filter_by(cnpj=cpf_or_cnpj).first()
-                
-            else: return ResultModel('Tipo de pessoa incorreto.', False, True).to_dict()
-            data = marshal(person, schema_person)
-            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict()
+            paginate_filter = playload.get('paginate')
+            data_filter = playload.get('data')
+            person = Person.query.filter_by(**data_filter).paginate(**paginate_filter)
+            data_paginate = marshal(person, PAGINATE)
+            data = marshal(person.items, person_fields)
+            return ResultModel('Pesquisa realizada com sucesso.', data, False).to_dict(data_paginate)
         except Exception as e:
             return ResultModel('Não foi possivel realizar a pesquisa.', False, True, str(e)).to_dict()
     

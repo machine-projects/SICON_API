@@ -16,15 +16,11 @@ validity_req = ErrorsRequestDecorator()
 def get_all():
     return  PersonHandler().get_all_persons() 
 
-@controller_person.route('/person/cpf/<cpf>', methods=['GET'])
+@controller_person.route('/person/params', methods=['GET'])
 @jwt.required_permission(PermissionEnum.VIEW.value)
-def get_by_cpf(cpf):
-    return  PersonHandler().get_by_cpf(cpf) 
+def get_by_params():
+    return  PersonHandler().get_by_params() 
 
-@controller_person.route('/person/cnpj/<cnpj>', methods=['GET'])
-@jwt.required_permission(PermissionEnum.VIEW.value)
-def get_by_cnpj(cnpj):
-    return  PersonHandler().get_by_cnpj(cnpj) 
 
 @controller_person.route('/person', methods=['PUT'])
 @jwt.required_permission(PermissionEnum.EDIT.value)

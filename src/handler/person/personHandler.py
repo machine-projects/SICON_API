@@ -9,8 +9,9 @@ from src.contract.peson.createPersonContract import CreatePersonContract
 from src.contract.peson.updatePersonContract import UpdatePersonContract
 from src.contract.peson.deletePersonContract import DeletePersonContract
 from src.helper.personHelper import PersonHelper
-from src.helper.genericHelper import GenericHelper as Helper
+from src.helper.genericHelper import GenericHelper
 from src.infra.handler.setStatusResponseHandler import SetStatusResponseHandler
+from src.contract.peson.getByParamsPersonContract import GetByParamsPersonContract
 
 
 class PersonHandler:
@@ -26,32 +27,47 @@ class PersonHandler:
         status_result = SetStatusResponseHandler()
         return status_result.default(persons)
 
-    def get_by_cpf(self, cpf):
-        contract = GetByCpfPersonContract()
-        if not(contract.validate(cpf)):
+    def get_by_params(self):
+        contract = GetByParamsPersonContract()
+        playload = request.args
+        if not(contract.validate(playload)):
             return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
+        generic_helper = GenericHelper()
+        params_filter = {}
+        _id = playload.get('id')
+        cnpj = playload.get('cnpj')
+        cpf = playload.get('cpf')
+        birth_date = playload.get('birth_date')
+        gender = playload.get('gender')
+        name = playload.get('name')
+        _type = playload.get('type')
+
+        if _id:
+            params_filter['id'] = int(_id)
+        if cnpj:
+            params_filter['cnpj'] = cnpj
+        if cpf:
+            params_filter['cpf'] = cpf
+        if birth_date:
+            params_filter['birth_date'] = generic_helper.str_date_to_datetime(birth_date)
+        if gender:
+            params_filter['gender'] = gender
+        if name:
+            params_filter['name'] = name
+        if _type:
+            params_filter['type'] = _type
+        params_filter= Paginate().include_paginate_args_playload(request, params_filter)
         repository = PersonRepository()
-        person = repository.get_by_cpf_or_cnpj('Pessoa Fisica', cpf)
-        
+        systems = repository.get_search_by_params(params_filter)
         status_result = SetStatusResponseHandler()
-        return status_result.default(person)
-    
-    def get_by_cnpj(self, cnpj):
-        contract = GetByCnpjPersonContract()
-        if not(contract.validate(cnpj)):
-            return ResultModel('Parametro incorreto.', False, contract.errors).to_dict(), 406
-        repository = PersonRepository()
-        person = repository.get_by_cnpj_or_cnpj('Pessoa Juridica', cnpj)
-        
-        status_result = SetStatusResponseHandler()
-        return status_result.default(person)
+        return status_result.default(systems)
 
     def update_person(self):
         contract = UpdatePersonContract()
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
-        playload = Helper().captalize_full_dict(playload)
+        playload = GenericHelper().captalize_full_dict(playload)
         repository = PersonRepository()
 
         person = repository.update_person(playload)
@@ -64,7 +80,7 @@ class PersonHandler:
         playload = request.json
         if not(contract.validate(playload)):
             return ResultModel('Problema nos parametros enviados.', False, contract.errors).to_dict(), 406
-        playload = Helper().captalize_full_dict(playload)
+        playload = GenericHelper().captalize_full_dict(playload)
         repository = PersonRepository()
         cpf = playload.get('cpf')
         cnpj = playload.get('cnpj')
