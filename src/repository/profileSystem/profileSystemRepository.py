@@ -8,7 +8,6 @@ from src.infra.model.resultModel import ResultModel
 from src.repository.system.systemRepository import SystemRepository
 
 
-
 class ProfileSystemRepository:
     
 
@@ -87,9 +86,19 @@ class ProfileSystemRepository:
             profile_system = ProfileSystem.query.get(_id)
             if not profile_system:
                 return ResultModel('Não encontrado.', False, True).to_dict()
+            profile_permissions = profile_system.profilePermission
+            users_profile_system = profile_system.userProfileSystem
+            if profile_permissions:
+                for  profile_permission in profile_permissions:
+                    db.session.delete(profile_permission)
+            
+            if users_profile_system:
+                for  user_profile_system in users_profile_system:
+                    db.session.delete(user_profile_system)
             db.session.delete(profile_system)
             db.session.commit()
             data = marshal(profile_system, profile_system_fields)
             return ResultModel('Deletado com sucesso.', data, False).to_dict()
         except Exception as e:
             return ResultModel('Não foi possivel deletar.', False, True, str(e)).to_dict()
+    
