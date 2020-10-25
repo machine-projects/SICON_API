@@ -30,4 +30,6 @@ def shell_context():
         ProfileSystem=ProfileSystem,
         UserProfileSystem=UserProfileSystem,
     )
-app.run(debug=True)
+
+if __name__ == '__main__':
+    app.run(debug=True)
