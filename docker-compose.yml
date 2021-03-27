@@ -10,15 +10,14 @@ services:
       - "5000:5000"
 
   db-sicon:
-    image: mariadb:10.5
+    image: postgres
     container_name: db_sicon
     restart: always
     ports: 
-      - "3308:3306"
+      - "5432:5432"
     environment: 
-      MYSQL_ROOT_PASSWORD: sicon123
-      MYSQL_DATABASE: sicon
-      MYSQL_USER: sicon
-      MYSQL_PASSWORD: sicon123
+      POSTGRES_PASSWORD: sicon123
+      POSTGRES_DB: sicon
+      POSTGRES_USER: sicon
 
   

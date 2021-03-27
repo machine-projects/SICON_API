@@ -20,7 +20,7 @@ from src.handler.auth.admin import Admin
 
 class UserAndDependenciesHandler:
  
-    def create_user_person_address(self):
+    def create_user_person_address(self, first_admin=False):
         helper = Helper()
         contract = CreateUserAndpersonAndAddressContract()
         playload = request.json
@@ -42,7 +42,7 @@ class UserAndDependenciesHandler:
                 username = user_dto.get('username')
                 return ResultModel(f'Usuario "{username}" já existe.', False, True).to_dict(), 406
             return user_exist, 406
-        if user_dto.get('is_admin') and not Admin().is_admin():
+        if user_dto.get('is_admin') and not Admin().is_admin() and not first_admin:
             return ResultModel('Só um administrador pode criar outro administrador.', False, contract.errors).to_dict(), 406            
         cpf = person_dto.get('cpf')
         cnpj = person_dto.get('cnpj')
@@ -80,7 +80,7 @@ class UserAndDependenciesHandler:
         person=person,
         address=address,
         )   
-        return result, 200
+        return result, 201
 
     def get_user_person_address(self):
         contract = GetUserAndpersonAndAddressContract()

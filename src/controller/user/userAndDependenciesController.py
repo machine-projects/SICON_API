@@ -26,3 +26,10 @@ def get():
     user_and_dependencies = UserAndDependenciesHandler()
     return user_and_dependencies.get_user_person_address()
 
+
+## REMOVER ROTA DEPOIS QUE CRIAR ADMIN PARA CESSO DO SISTEMA
+@controller_user_and_dependencies.route('/completeuser/firstadmin', methods=['POST'])
+@validity_req.body_is_json
+def post_first_user():
+    user_and_dependencies = UserAndDependenciesHandler()
+    return user_and_dependencies.create_user_person_address(True)
