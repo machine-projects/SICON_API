@@ -1,0 +1,7 @@
+Dockerfile
+.dockerignore
+.gitignore
+.vscode
+.idea
+Pipfile
+Pipfile.lock

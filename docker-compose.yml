@@ -1,0 +1,24 @@
+version: "3.3"
+
+services: 
+  app-sicon-back:
+    build: 
+      context: .
+    container_name: app_sicon_back
+    restart: always
+    ports: 
+      - "5000:5000"
+
+  db-sicon:
+    image: mariadb:10.5
+    container_name: db_sicon
+    restart: always
+    ports: 
+      - "3308:3306"
+    environment: 
+      MYSQL_ROOT_PASSWORD: sicon123
+      MYSQL_DATABASE: sicon
+      MYSQL_USER: sicon
+      MYSQL_PASSWORD: sicon123
+
+  
